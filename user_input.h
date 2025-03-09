@@ -1,8 +1,10 @@
 #pragma once
-#include <string>
 #include "input_action.cpp"
+#include "dialogue.h"
+#include <iostream>
+#include <string>
 
-class user_input
+class User_Input
 {
 public:
 	static std::string get_input(std::string message);

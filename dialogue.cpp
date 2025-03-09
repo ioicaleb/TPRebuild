@@ -1,7 +1,4 @@
 #include "dialogue.h"
-#include <iostream>
-#include <thread>
-#include <chrono>
 
 using namespace std;
 
@@ -16,7 +13,7 @@ string title = string("Quest to the Center of a Tootsie Pop\n\n"
 	"\nThe world may never know..."
 	"\nPress enter to begin!");
 
-static void print_line(string line, int delay = 30) {
+void Dialogue::print_line(const std::string& line, int delay) {
 	for (char c : line) {
 		cout << c;
 		this_thread::sleep_for(chrono::milliseconds(delay));
@@ -24,18 +21,25 @@ static void print_line(string line, int delay = 30) {
 	cout << "\n";
 };
 
-static void print(string line, int delay = 30) {
+void Dialogue::print(const string& line, int delay) {
 	for (char c : line) {
 		cout << c;
 		this_thread::sleep_for(chrono::milliseconds(delay));
 	};
 };
 
-void show_title() { print_line(title); };
+void Dialogue::show_title() { print_line(title); };
 
-void show_opening_monologue() { print_line(opening_monologue); };
+void Dialogue::show_opening_monologue() { print_line(opening_monologue); };
 
-static void add_pause(int delay) {
+void Dialogue::add_pause(int delay) {
 	this_thread::sleep_for(chrono::milliseconds(delay));
 };
 
+std::string Dialogue::lowercase(const std::string& input) {
+	std::string output = "";
+	for (int i = 0; i < input.length(); i++) {
+		output += tolower(input[i]);
+	}
+	return output;
+}

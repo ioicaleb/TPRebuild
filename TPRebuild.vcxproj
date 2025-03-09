@@ -130,9 +130,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="characters.cpp" />
+    <ClCompile Include="cheat.cpp" />
+    <ClCompile Include="collections.cpp" />
     <ClCompile Include="dialogue.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="game_manager.cpp" />
+    <ClCompile Include="hints.cpp" />
     <ClCompile Include="input_action.cpp" />
     <ClCompile Include="input_handler.cpp" />
     <ClCompile Include="interactables.cpp" />
@@ -140,13 +143,20 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="room.cpp" />
+    <ClCompile Include="room_handler.cpp" />
+    <ClCompile Include="tutorial.cpp" />
     <ClCompile Include="user_input.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="characters.h" />
+    <ClInclude Include="characters_handler.h" />
+    <ClInclude Include="collections.h" />
     <ClInclude Include="dialogue.h" />
     <ClInclude Include="game_manager.h" />
     <ClInclude Include="input_handler.h" />
+    <ClInclude Include="interactables.h" />
+    <ClInclude Include="items.h" />
+    <ClInclude Include="room.h" />
+    <ClInclude Include="room_handler.h" />
     <ClInclude Include="user_input.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

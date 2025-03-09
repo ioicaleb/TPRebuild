@@ -1,7 +1,12 @@
+#pragma once
 #include <string>
+#include <algorithm>
 
 class Input_Action {
 public:
+	std::string command;
+	std::string target;
+	
 	Input_Action(std::string input) {
 		auto pos = input.find(" ");
 		if (pos != std::string::npos) {
@@ -16,6 +21,5 @@ public:
 		}
 	};
 
-	std::string command;
-	std::string target;
+	Input_Action() = default;
 };

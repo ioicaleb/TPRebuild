@@ -1,23 +1,22 @@
 #include "user_input.h"
-#include "dialogue.h"
-#include "input_action.cpp"
-#include <iostream>
 
-std::string user_input::get_input(std::string message)
+
+std::string User_Input::get_input(std::string message)
 {
 	char input[128];
-	print(message);
+	Dialogue::print(message);
 	std::cin.getline(input, 128);
 
-	return input;
+	return Dialogue::lowercase(input);
 };
 
-bool user_input::get_bool(std::string message) {
+bool User_Input::get_bool(std::string message) {
 	std::string input;
 	bool valid = false;
 	while (!valid) {
-		print(message);
+		Dialogue::print(message);
 		std::cin >> input;
+		input = Dialogue::lowercase(input);
 		if (input == "yes" || input == "y") {
 			return true;
 		}
@@ -25,9 +24,9 @@ bool user_input::get_bool(std::string message) {
 			return false;
 		}
 		else {
-			print_line("Invalid input. Please enter 'yes' or 'no'.");
+			Dialogue::print_line("Invalid input. Please enter 'yes' or 'no'.");
 		}
 	}
 };
 
-Input_Action user_input::get_action(std::string message) { return Input_Action(user_input::get_input(message)); };
+Input_Action User_Input::get_action(std::string message) { return Input_Action(User_Input::get_input(message)); };

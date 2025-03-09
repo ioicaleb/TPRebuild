@@ -1,7 +1,7 @@
 #pragma once
-class Game_Manager
+
+struct Game_Manager
 {
-public:
 	static void start_game();
 
 	static void lose_game();
