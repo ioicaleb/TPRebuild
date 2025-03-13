@@ -1,11 +1,5 @@
-#include "dialogue.h"
 #include "game_manager.h"
-#include "user_input.h"
-#include "characters.cpp"
-#include "input_handler.h"
-#include "tutorial.cpp"
-#include "collections.h"
-#include "input_action.cpp"
+#include "tutorial.h"
 
 static bool game_over = false;
 
@@ -17,6 +11,7 @@ void Game_Manager::start_game() {
 	std::cin.get();
 	system("CLS");
 	Collections::reset_collections();
+	
 	if (User_Input::get_bool("Would you like a tutorial?: ")) {
 		Tutorial_Handler::teach();
 	}
@@ -28,14 +23,15 @@ void Game_Manager::start_game() {
 		Dialogue::print_line("");
 	}
 	while (!game_over) {
-		Input_Handler::handle_action(User_Input::get_action("What would you like to do?: "));
+		Input_Action command = User_Input::get_action("What would you like to do?: ");
+		Input_Handler::handle_action(command);
 		Dialogue::print_line("");
 	};
 };
 
 void Game_Manager::win_game() {
 	game_over = true;
-	Dialogue::print_line("Congratulations! You have answered the age old question! It took " + std::to_string(Characters_Handler::player.get_licks()) + " licks to get to the center of yourself.\nThanks for playing! To quit out of the game, press enter.");
+	Dialogue::print_line("Congratulations! You have answered the age old question! It took " + std::to_string(Characters_Handler::get_player().get_licks()) + " licks to get to the center of yourself.\nThanks for playing! To quit out of the game, press enter.");
 	std::cin.get();
 	Dialogue::print_line("Bye! Have a good one!");
 	Dialogue::add_pause(600);

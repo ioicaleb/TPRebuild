@@ -1,16 +1,12 @@
 #include "dialogue.h"
-#include <ctime>
-#include <string>
 
-class Player {
-private:
+struct Player {
 	int Sugar_level = 0;
 	int Experience = 0;
 	int Licks = 0;
 	int Critical_threshold = 95;
 	int Critical_multiplier = 1;
 
-public:
 	int get_sugar_level() { return Sugar_level; };
 	int get_experience() { return Experience; };
 	int get_licks() { return Licks; };

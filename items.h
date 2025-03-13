@@ -1,17 +1,13 @@
 #pragma once
-#include "collections.h"
-#include <string>
+#include "dialogue.h"
 
-class Items {
-public:
+
+struct Items {
 	std::string Name;
 	std::string Description;
 
-	Items();
+	Items() { this->Name = std::string(""); };
 	Items(std::string name, std::string description);
 
-	void get_item();
-
 	void use_item();
-	void use_item(std::string message);
 };

@@ -7,9 +7,9 @@ public:
 	std::string Name;
 	std::string Description;
 
-	Interactables();
+	Interactables() { this->Name = std::string(""); };
 	Interactables(std::string name, std::string description);
 
-	void use_interactable();
+	void use_interactable() const;
 	void use_interactable(std::string message);
 };

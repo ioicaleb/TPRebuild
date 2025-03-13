@@ -1,19 +1,13 @@
 #include "dialogue.h"
-#include <string>
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h> 
-
-using namespace std;
 
 class Enemy {
 private:
-	const string Flavors[5] = { "cherry", "chocolate", "orange", "grape", "raspberry" };
+	const std::string Flavors[5] = { "cherry", "chocolate", "orange", "grape", "raspberry" };
 
 public:
-	string Name;
+	std::string Name;
 	int Health = 0;
-	string Introduction = "Oh, no!A" + Name == "orange" ? "n " : " " + Name + " pop has appeared!";
+	std::string Introduction = "Oh, no! A" + Name == "orange" ? "n " : " " + Name + " pop has appeared!";
 
 	Enemy() {
 		srand(time(NULL));
@@ -22,7 +16,9 @@ public:
 		Dialogue::print_line(Introduction);
 	};
 
-	Enemy(string name) {
+	Enemy(bool skip) {};
+
+	Enemy(std::string name) {
 		Name = name;
 		if (name == "Bishop") {
 			Health = 20;

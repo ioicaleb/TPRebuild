@@ -1,4 +1,7 @@
 #pragma once
+#include "dialogue.h"
+#include "user_input.h"
+#include "input_handler.h"
 
 struct Game_Manager
 {

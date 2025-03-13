@@ -1,16 +1,17 @@
 #include "user_input.h"
 
-
-std::string User_Input::get_input(std::string message)
+std::string User_Input::get_input(const std::string& message)
 {
-	char input[128];
+	std::string input = "";
 	Dialogue::print(message);
-	std::cin.getline(input, 128);
+	while (input == "") {
+		std::getline(std::cin, input);
+	}
 
 	return Dialogue::lowercase(input);
 };
 
-bool User_Input::get_bool(std::string message) {
+bool User_Input::get_bool(const std::string& message) {
 	std::string input;
 	bool valid = false;
 	while (!valid) {

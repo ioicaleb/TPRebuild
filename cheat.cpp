@@ -1,96 +1,92 @@
-#pragma once
-#include "input_handler.h"
+#include "cheat.h"
 
-struct Cheat {
+static bool combat = false;
 
-    static void CreateSendAction(string command) { Input_Handler::handle_action(Input_Action(command)); };
+static void GrindXP()
+{
+	while (Characters_Handler::get_player().get_experience() < 9)
+	{
+		bool combat = true;
+		Characters_Handler::spawn_enemy("Pantry");
+		while (combat)
+		{
+			combat = Characters_Handler::attack_enemy(combat);
+		}
+	}
+};
 
-    static void GrindXP()
-    {
-        while (Characters_Handler::player.get_experience() < 9)
-        {
-            bool combat = true;
-            Characters_Handler::spawn_enemy("Pantry");
-            while (combat)
-            {
-                combat = Characters_Handler::attack_enemy(&combat);
-            }
-        }
-    };
-
-	static void play_game_for_me() {
-        CreateSendAction("use light switch");
-        CreateSendAction("get tool belt");
-        CreateSendAction("move kitchen");
-        CreateSendAction("get knife");
-        CreateSendAction("get water bottle");
-        CreateSendAction("use water bowl");
-        CreateSendAction("use water bottle");
-        Input_Handler::combat = false;
-        CreateSendAction("move living room");
-        CreateSendAction("get mints");
-        CreateSendAction("get key");
-        Input_Handler::combat = false;
-        CreateSendAction("move guest bedroom");
-        CreateSendAction("get guard");
-        Input_Handler::combat = false;
-        CreateSendAction("move bathroom");
-        CreateSendAction("get dentures");
-        CreateSendAction("use toilet");
-        CreateSendAction("use water bottle");
-        Input_Handler::combat = false;
-        CreateSendAction("move office");
-        CreateSendAction("get batteries");
-        Input_Handler::combat = false;
-        GrindXP();
-        CreateSendAction("move garage");
-        CreateSendAction("use key");
-        CreateSendAction("use sander");
-        while (!(*Collections::get_room(Room_Handler::Current_location)).Boss_defeated && Characters_Handler::player.get_sugar_level() < 100)
-        {
-            CreateSendAction("lick");
-        }
-        CreateSendAction("use knife");
-        CreateSendAction("get ladder");
-        CreateSendAction("move attic");
-        CreateSendAction("use ladder");
-        CreateSendAction("use home gym");
-        while (!(*Collections::get_room(Room_Handler::Current_location)).Boss_defeated && Characters_Handler::player.get_sugar_level() < 100)
-        {
-            CreateSendAction("lick");
-        }
-        CreateSendAction("get lantern");
-        CreateSendAction("use batteries");
-        CreateSendAction("move basement");
-        CreateSendAction("use lantern");
-        CreateSendAction("use milk crates");
-        while (!(*Collections::get_room(Room_Handler::Current_location)).Boss_defeated && Characters_Handler::player.get_sugar_level() < 100)
-        {
-            CreateSendAction("lick");
-        }
-        CreateSendAction("get shovel");
-        CreateSendAction("get metal detector");
-        CreateSendAction("use water main");
-        CreateSendAction("move kitchen");
-        CreateSendAction("use sink");
-        Input_Handler::combat = false;
-        CreateSendAction("move bathroom");
-        CreateSendAction("use sink");
-        Input_Handler::combat = false;
-        CreateSendAction("move backyard");
-        CreateSendAction("use metal detector");
-        CreateSendAction("use shovel");
-        CreateSendAction("use switch");
-        CreateSendAction("move hidden room");
-        CreateSendAction("use knife");
-        CreateSendAction("use shovel");
-        CreateSendAction("use water bottle");
-        while (!(*Collections::get_room(Room_Handler::Current_location)).Boss_defeated && Characters_Handler::player.get_sugar_level() < 100)
-        {
-            CreateSendAction("lick");
-        }
-        CreateSendAction("use mints");
-        CreateSendAction("use mints");
-        CreateSendAction("use button");
-    }
+void Cheat::play_game_for_me() {
+	Input_Handler::create_send_action("use light switch");
+	Input_Handler::create_send_action("get tool belt");
+	Input_Handler::create_send_action("move kitchen");
+	Input_Handler::create_send_action("get knife");
+	Input_Handler::create_send_action("get water bottle");
+	Input_Handler::create_send_action("use water bowl");
+	Input_Handler::create_send_action("use water bottle");
+	combat = false;
+	Input_Handler::create_send_action("move living room");
+	Input_Handler::create_send_action("get mints");
+	Input_Handler::create_send_action("get key");
+	combat = false;
+	Input_Handler::create_send_action("move guest bedroom");
+	Input_Handler::create_send_action("get guard");
+	combat = false;
+	Input_Handler::create_send_action("move bathroom");
+	Input_Handler::create_send_action("get dentures");
+	Input_Handler::create_send_action("use toilet");
+	Input_Handler::create_send_action("use water bottle");
+	combat = false;
+	Input_Handler::create_send_action("move office");
+	Input_Handler::create_send_action("get batteries");
+	combat = false;
+	GrindXP();
+	Input_Handler::create_send_action("move garage");
+	Input_Handler::create_send_action("use key");
+	Input_Handler::create_send_action("use sander");
+	while ((Collections::get_room(Room_Handler::get_current_location()).Boss_defeated != false) && (Characters_Handler::get_player().get_sugar_level() < 100))
+	{
+		Input_Handler::create_send_action("lick");
+	}
+	Input_Handler::create_send_action("use knife");
+	Input_Handler::create_send_action("get ladder");
+	Input_Handler::create_send_action("move attic");
+	Input_Handler::create_send_action("use ladder");
+	Input_Handler::create_send_action("use home gym");
+	while ((Collections::get_room(Room_Handler::get_current_location()).Boss_defeated != false) && (Characters_Handler::get_player().get_sugar_level() < 100))
+	{
+		Input_Handler::create_send_action("lick");
+	}
+	Input_Handler::create_send_action("get lantern");
+	Input_Handler::create_send_action("use batteries");
+	Input_Handler::create_send_action("move basement");
+	Input_Handler::create_send_action("use lantern");
+	Input_Handler::create_send_action("use milk crates");
+	while ((Collections::get_room(Room_Handler::get_current_location()).Boss_defeated != false) && (Characters_Handler::get_player().get_sugar_level() < 100))
+	{
+		Input_Handler::create_send_action("lick");
+	}
+	Input_Handler::create_send_action("get shovel");
+	Input_Handler::create_send_action("get metal detector");
+	Input_Handler::create_send_action("use water main");
+	Input_Handler::create_send_action("move kitchen");
+	Input_Handler::create_send_action("use sink");
+	combat = false;
+	Input_Handler::create_send_action("move bathroom");
+	Input_Handler::create_send_action("use sink");
+	combat = false;
+	Input_Handler::create_send_action("move backyard");
+	Input_Handler::create_send_action("use metal detector");
+	Input_Handler::create_send_action("use shovel");
+	Input_Handler::create_send_action("use switch");
+	Input_Handler::create_send_action("move hidden room");
+	Input_Handler::create_send_action("use knife");
+	Input_Handler::create_send_action("use shovel");
+	Input_Handler::create_send_action("use water bottle");
+	while ((Collections::get_room(Room_Handler::get_current_location()).Boss_defeated != false) && Characters_Handler::get_player().get_sugar_level() < 100)
+	{
+		Input_Handler::create_send_action("lick");
+	}
+	Input_Handler::create_send_action("use mints");
+	Input_Handler::create_send_action("use mints");
+	Input_Handler::create_send_action("use button");
 };

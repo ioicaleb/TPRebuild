@@ -1,18 +1,18 @@
 #pragma once
-#include "input_action.cpp"
-#include "dialogue.h"
 #include "game_manager.h"
-#include "collections.h"
+#include "input_action.h"
 #include "characters_handler.h"
 #include "room_handler.h"
-#include "hints.cpp"
+#include "hints.h"
 #ifdef _DEBUG
-#include "cheat.cpp"
+#include "cheat.h"
 #endif
+#include <algorithm>
+#include <string>
 
-struct Input_Handler
-{
-	static bool combat;
-	static void handle_action(Input_Action action);
+struct Input_Handler {
+	Input_Handler() {};
+
+	static void handle_action(const Input_Action& action);
+	static void create_send_action(const char* action);
 };
-

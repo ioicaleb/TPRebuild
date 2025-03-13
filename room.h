@@ -1,33 +1,30 @@
 #pragma once
-#include "items.h"
-#include "interactables.h"
-#include <set>
 #include <string>
-
-using namespace std;
+#include <set>
+#include <functional>
 
 class Room
 {
 private:
-	void add_gettable_item(set<string> items);
-	void add_interactable(set<string> items);
-	void add_useable_item(set<string> items);
+	void add_gettable_item(std::set<std::string> items);
+	void add_interactable(std::set<std::string> items);
+	void add_useable_item(std::set<std::string> items);
 
 public:
-	Room();
-	Room(string name, string description, double encounter_chance, set<string> getItems, set<string> interactables);
+	Room() { Name = ""; };
+	Room(std::string name, std::string description, double encounter_chance, std::set<std::string> getItems, std::set<std::string> interactables);
 	bool roll_encounter();
 
-	string Name;
-	string Description;
+	std::string Name;
+	std::string Description;
 	bool Boss_defeated = true;
 	bool Locked = false;
 
-	virtual void defeat_boss() {};
+	virtual std::string defeat_boss() {};
 
-	set<string> Get_items{};
+	std::set<std::string> Get_items{};
 
-	set<string> Usable_items{
+	std::set<std::string> Usable_items{
 		"tool belt",
 		"water bottle",
 		"mouthguard",
@@ -35,5 +32,5 @@ public:
 		"mints",
 		"batteries" };
 
-	set<string> Room_interactables{ "light switch" };
+	std::set<std::string> Room_interactables{ "light switch" };
 };

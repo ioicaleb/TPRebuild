@@ -16,14 +16,14 @@
     <Filter Include="Source Files\Handlers">
       <UniqueIdentifier>{461f34eb-b915-41a6-aed3-4a286529d4fa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Models">
-      <UniqueIdentifier>{aec1e130-bd45-46f8-b350-a1eb830b9b50}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Handlers">
       <UniqueIdentifier>{5d1cd13a-8983-46ce-939c-59f89f9ac2fb}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Classes">
       <UniqueIdentifier>{6024014c-3d91-42d1-ae77-bacda0486291}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models">
+      <UniqueIdentifier>{aec1e130-bd45-46f8-b350-a1eb830b9b50}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -31,31 +31,22 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="enemy.cpp">
-      <Filter>Resource Files\Models</Filter>
+      <Filter>Source Files\Models</Filter>
     </ClCompile>
     <ClCompile Include="input_action.cpp">
-      <Filter>Resource Files\Models</Filter>
+      <Filter>Source Files\Models</Filter>
     </ClCompile>
     <ClCompile Include="interactables.cpp">
-      <Filter>Resource Files\Models</Filter>
-    </ClCompile>
-    <ClCompile Include="items.cpp">
-      <Filter>Resource Files\Models</Filter>
+      <Filter>Source Files\Models</Filter>
     </ClCompile>
     <ClCompile Include="player.cpp">
-      <Filter>Resource Files\Models</Filter>
+      <Filter>Source Files\Models</Filter>
     </ClCompile>
     <ClCompile Include="user_input.cpp">
-      <Filter>Resource Files\Models</Filter>
+      <Filter>Source Files\Models</Filter>
     </ClCompile>
     <ClCompile Include="room.cpp">
-      <Filter>Resource Files\Models</Filter>
-    </ClCompile>
-    <ClCompile Include="characters.cpp">
-      <Filter>Source Files\Handlers</Filter>
-    </ClCompile>
-    <ClCompile Include="dialogue.cpp">
-      <Filter>Source Files\Handlers</Filter>
+      <Filter>Source Files\Models</Filter>
     </ClCompile>
     <ClCompile Include="input_handler.cpp">
       <Filter>Source Files\Handlers</Filter>
@@ -73,10 +64,19 @@
       <Filter>Source Files\Handlers</Filter>
     </ClCompile>
     <ClCompile Include="cheat.cpp">
-      <Filter>Resource Files\Models</Filter>
+      <Filter>Source Files\Models</Filter>
     </ClCompile>
     <ClCompile Include="hints.cpp">
-      <Filter>Resource Files\Models</Filter>
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="characters_handler.cpp">
+      <Filter>Source Files\Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="dialogue_handler.cpp">
+      <Filter>Source Files\Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="items.cpp">
+      <Filter>Source Files\Models</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -109,6 +109,18 @@
     </ClInclude>
     <ClInclude Include="items.h">
       <Filter>Header Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="input_action.h">
+      <Filter>Header Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="tutorial.h">
+      <Filter>Header Files\Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="hints.h">
+      <Filter>Header Files\Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="cheat.h">
+      <Filter>Header Files\Handlers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

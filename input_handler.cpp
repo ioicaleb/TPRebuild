@@ -1,58 +1,64 @@
 #include "input_handler.h"
 
+static bool combat = false;
+
 static void list_help() {
 	for (auto pair : Collections::Valid_inputs) {
 		Dialogue::print_line(pair.first + " - " + pair.second, 10);
 	}
 }
 
-void Input_Handler::handle_action(Input_Action action)
+void Input_Handler::handle_action(const Input_Action& action)
 {
 	if (action.command == "lick") {
-		Characters_Handler::attack_enemy(&combat);
+		Characters_Handler::attack_enemy(combat);
+		
+		if (Characters_Handler::get_player().get_sugar_level() > 99) {
+			Game_Manager::lose_game();
+		}
 	}
 	else if (action.command == "move") {
-		Room_Handler::change_room(Collections::get_room(action.target), &combat);
+		Room_Handler::change_room(Collections::get_room(action.target), combat);
 	}
 	else if (action.command == "map") {
 		Room_Handler::view_rooms();
 	}
 	else if (action.command == "check") {
-		Items* itemptr = Collections::get_item(action.target);
-		if (itemptr == nullptr)
+		Items item = Collections::get_item(action.target);
+		if (item.Name == "")
 		{
-			Interactables* interactptr = Collections::get_interactable(action.target);
-			if (interactptr != nullptr) {
-				Dialogue::print_line((*interactptr).Description);
+			Interactables interact = Collections::get_interactable(action.target);
+			if (interact.Name != "") {
+				Dialogue::print_line(interact.Description);
 			}
 			else {
 				Dialogue::print_line("There's no " + action.target + " to check.");
 			}
 		}
 		else {
-			Dialogue::print_line((*itemptr).Description);
+			Dialogue::print_line(item.Description);
 		}
 	}
 	else if(action.command == "use") {
-		Items* itemptr = Collections::get_item(action.target);
-		if (itemptr == nullptr)
+		Items item = Collections::get_item(action.target);
+		if (item.Name == "")
 		{
-			Interactables* interactptr = Collections::get_interactable(action.target);
-			if (interactptr != nullptr) {
-				interactptr->use_interactable();
+			Interactables interact = Collections::get_interactable(action.target);
+			if (interact.Name != "") {
+				interact.use_interactable();
 			}
 			else {
 				Dialogue::print_line("There's no " + action.target + " that you can use.");
 			}
 		}
 		else {
-			itemptr->use_item();
+			item.use_item();
 		}
 	}
 	else if (action.command == "get") {
-		Items* item = Collections::get_item(action.target);
-		if (item != nullptr) {
-			item->get_item();
+		Items item = Collections::get_item(action.target);
+		if (item.Name != "") {
+			Collections::add_item(item);
 		}
 		else {
 			Dialogue::print_line("You can't fit " + action.target + " anywhere on your TOOLBELT.");
@@ -65,10 +71,10 @@ void Input_Handler::handle_action(Input_Action action)
 		Hints::display_hints();
 	}
 	else if (action.command == "search") {
-		Room_Handler::search_room(&combat);
+		Room_Handler::search_room(combat);
 	}
 	else if (action.command == "sugar") {
-		Dialogue::print_line("Your sugar level is currently " + to_string(Characters_Handler::player.get_sugar_level()) + "%.");
+		Dialogue::print_line("Your sugar level is currently " + std::to_string(Characters_Handler::get_player().get_sugar_level()) + "%.");
 	}
 #ifdef _DEBUG
 	else if (action.command == "gimmee") {
@@ -82,3 +88,5 @@ void Input_Handler::handle_action(Input_Action action)
 		Dialogue::print_line("Sorry. I didn't catch that. Please try again.");
 	}
 }
+
+void Input_Handler::create_send_action(const char* command) { handle_action(Input_Action(std::string(command))); };
