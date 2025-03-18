@@ -30,17 +30,17 @@ struct Player {
 	};
 
 	int roll_damage() {
-		int crit_damage = 0;
-		srand(time(0));
+		int crit_damage = 1;
+		srand(time(NULL));
 		if ((rand() % 101) > Critical_threshold) {
-			crit_damage = (rand() % 11 + 1) * Critical_multiplier;
+			crit_damage += (rand() % 11) * Critical_multiplier;
 			Dialogue::print_line("Chomp!");
 		}
 		return crit_damage;
 	};
 
 	void eat_candy() {
-		Dialogue::print_line("Mmmmm... You've reached the delicious Tootsie Pop center!\n Your sugar level is at " + std::to_string(Sugar_level) + ".");
+		Dialogue::print_line("Mmmmm... You've reached the delicious Tootsie Pop center!\nYour sugar level is at " + std::to_string(Sugar_level) + ".");
 		if (Sugar_level > 50) {
 			Dialogue::print_line("Careful! If your sugar level reaches 100, you'll crash! Try drinking some water!");
 		};

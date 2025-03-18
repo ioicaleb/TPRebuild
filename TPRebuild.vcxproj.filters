@@ -78,6 +78,9 @@
     <ClCompile Include="items.cpp">
       <Filter>Source Files\Models</Filter>
     </ClCompile>
+    <ClCompile Include="item_handler.cpp">
+      <Filter>Source Files\Handlers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="user_input.h">
@@ -107,9 +110,6 @@
     <ClInclude Include="interactables.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
-    <ClInclude Include="items.h">
-      <Filter>Header Files\Classes</Filter>
-    </ClInclude>
     <ClInclude Include="input_action.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
@@ -120,6 +120,9 @@
       <Filter>Header Files\Handlers</Filter>
     </ClInclude>
     <ClInclude Include="cheat.h">
+      <Filter>Header Files\Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="item_handler.h">
       <Filter>Header Files\Handlers</Filter>
     </ClInclude>
   </ItemGroup>

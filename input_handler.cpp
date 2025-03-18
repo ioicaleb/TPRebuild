@@ -11,20 +11,26 @@ static void list_help() {
 void Input_Handler::handle_action(const Input_Action& action)
 {
 	if (action.command == "lick") {
-		Characters_Handler::attack_enemy(combat);
-		
+		combat = Characters_Handler::attack_enemy(combat);
+
 		if (Characters_Handler::get_player().get_sugar_level() > 99) {
 			Game_Manager::lose_game();
 		}
 	}
 	else if (action.command == "move") {
-		Room_Handler::change_room(Collections::get_room(action.target), combat);
+		Room room = Collections::get_room(action.target);
+		if (room.Name == "") {
+			Dialogue::print_line("That's not somewhere you can go right now.");
+		}
+		else {
+			Room_Handler::change_room(room, combat);
+		}
 	}
 	else if (action.command == "map") {
 		Room_Handler::view_rooms();
 	}
 	else if (action.command == "check") {
-		Items item = Collections::get_item(action.target);
+		Item item = Collections::get_item(action.target);
 		if (item.Name == "")
 		{
 			Interactables interact = Collections::get_interactable(action.target);
@@ -39,26 +45,50 @@ void Input_Handler::handle_action(const Input_Action& action)
 			Dialogue::print_line(item.Description);
 		}
 	}
-	else if(action.command == "use") {
-		Items item = Collections::get_item(action.target);
-		if (item.Name == "")
-		{
-			Interactables interact = Collections::get_interactable(action.target);
-			if (interact.Name != "") {
-				interact.use_interactable();
+	else if (action.command == "use") {
+		if (action.target == "sink") {
+			if (Room_Handler::get_current_location() == std::string("Kitchen")) {
+				Item_Handler::handle_use_item(Collections::get_interactable("kitchen sink"));
 			}
-			else {
-				Dialogue::print_line("There's no " + action.target + " that you can use.");
+			else if (Room_Handler::get_current_location() == std::string("Bathroom")) {
+				Item_Handler::handle_use_item(Collections::get_interactable("bathroom sink"));
+			}
+		}
+		else if (action.target == "bed") {
+			if (Room_Handler::get_current_location() == std::string("Master Bedroom")) {
+				Item_Handler::handle_use_item(Collections::get_interactable("master bed"));
+			}
+			else if (Room_Handler::get_current_location() == std::string("Guest Bedroom")) {
+				Item_Handler::handle_use_item(Collections::get_interactable("guest bed"));
 			}
 		}
 		else {
-			item.use_item();
+			Item item = Collections::get_item(action.target);
+			if (item.Name == "")
+			{
+				Interactables interact = Collections::get_interactable(action.target);
+				if (interact.Name != "") {
+					Item_Handler::handle_use_item(interact);
+				}
+				else {
+					Dialogue::print_line("There's no " + action.target + " that you can use.");
+				}
+			}
+			else {
+				Item_Handler::handle_use_item(item);
+				if (((item.Name == "key" && Room_Handler::get_current_location() == "Garage") || (item.Name == "ladder" && Room_Handler::get_current_location() == "Attic") || (item.Name == "camping lanter" && Room_Handler::get_current_location() == "Basement") ) && !Collections::get_room(Room_Handler::get_current_location()).Boss_defeated) {
+					combat = true;
+					Characters_Handler::spawn_enemy(Room_Handler::get_current_location());
+				}
+			}
 		}
 	}
 	else if (action.command == "get") {
-		Items item = Collections::get_item(action.target);
+		Item item = Collections::get_item(action.target);
 		if (item.Name != "") {
-			Collections::add_item(item);
+			if(Collections::add_item(item)) {
+				Item_Handler::handle_get_item(item.Name);
+			}
 		}
 		else {
 			Dialogue::print_line("You can't fit " + action.target + " anywhere on your TOOLBELT.");
@@ -79,6 +109,9 @@ void Input_Handler::handle_action(const Input_Action& action)
 #ifdef _DEBUG
 	else if (action.command == "gimmee") {
 		Cheat::play_game_for_me();
+	}
+	else if ("scatter") {
+		combat = false;
 	}
 #endif
 	else if (action.command == "quit") {

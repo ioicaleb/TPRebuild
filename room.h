@@ -7,8 +7,6 @@ class Room
 {
 private:
 	void add_gettable_item(std::set<std::string> items);
-	void add_interactable(std::set<std::string> items);
-	void add_useable_item(std::set<std::string> items);
 
 public:
 	Room() { Name = ""; };
@@ -19,8 +17,6 @@ public:
 	std::string Description;
 	bool Boss_defeated = true;
 	bool Locked = false;
-
-	virtual std::string defeat_boss() {};
 
 	std::set<std::string> Get_items{};
 
@@ -33,4 +29,12 @@ public:
 		"batteries" };
 
 	std::set<std::string> Room_interactables{ "light switch" };
+	
+	void add_useable_item(std::string item);
+	void add_useable_item(std::set<std::string> items);
+	void remove_useable_item(std::string item);
+	void add_interactable(std::set<std::string> items);
+	bool verify_item(std::string item);
+	void unlock_room();
+	void defeat_boss();
 };

@@ -1,12 +1,16 @@
-#include "interactables.h"
+#pragma once
+#include "dialogue.h"
+#include <string>
 
-std::string Name;
-std::string Description;
+struct Interactables {
+	std::string Name;
+	std::string Description;
+	std::string Use_message;
 
-Interactables::Interactables(std::string name, std::string description) {
-	Name = name;
-	Description = description;
+	Interactables() { Name = std::string(""); };
+	Interactables(std::string name, std::string description, std::string use_message) {
+		Name = name;
+		Description = description;
+		Use_message = use_message;
+	};
 };
-
-void Interactables::use_interactable() const { Dialogue::print_line("There's nothing useful you can do with the " + Name + "."); };
-void Interactables::use_interactable(std::string message) { Dialogue::print_line(message); };

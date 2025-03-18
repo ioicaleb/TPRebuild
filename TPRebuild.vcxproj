@@ -140,6 +140,7 @@
     <ClCompile Include="input_handler.cpp" />
     <ClCompile Include="interactables.cpp" />
     <ClCompile Include="items.cpp" />
+    <ClCompile Include="item_handler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="room.cpp" />
@@ -157,7 +158,7 @@
     <ClInclude Include="input_action.h" />
     <ClInclude Include="input_handler.h" />
     <ClInclude Include="interactables.h" />
-    <ClInclude Include="items.h" />
+    <ClInclude Include="item_handler.h" />
     <ClInclude Include="room.h" />
     <ClInclude Include="room_handler.h" />
     <ClInclude Include="tutorial.h" />

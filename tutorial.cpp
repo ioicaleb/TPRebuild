@@ -11,23 +11,23 @@ static void handle_action(const Input_Action& action)
 		Room_Handler::change_room(Collections::get_room(action.target), combat);
 	}
 	else if (action.command == "use") {
-		Items item = Collections::get_item(action.target);
+		Item item = Collections::get_item(action.target);
 		if (item.Name == "")
 		{
 			Interactables interact = Collections::get_interactable(action.target);
 			if (interact.Name != "") {
-				interact.use_interactable();
+				Item_Handler::handle_use_item(interact);
 			}
 			else {
 				Dialogue::print_line("There's no " + action.target + " that you can use.");
 			}
 		}
 		else {
-			item.use_item();
+			Item_Handler::handle_use_item(item);
 		}
 	}
 	else if (action.command == "get") {
-		Items item = Collections::get_item(action.target);
+		Item item = Collections::get_item(action.target);
 		if (item.Name != "") {
 			Collections::add_item(item);
 		}

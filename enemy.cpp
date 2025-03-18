@@ -7,35 +7,38 @@ private:
 public:
 	std::string Name;
 	int Health = 0;
-	std::string Introduction = "Oh, no! A" + Name == "orange" ? "n " : " " + Name + " pop has appeared!";
 
 	Enemy() {
 		srand(time(NULL));
 		Name = Flavors[rand() % 5];
 		Health = 10;
-		Dialogue::print_line(Introduction);
+		std::string introduction = "Oh, no! A";
+		introduction += (Name == "orange" ? "n " : " "); 
+		introduction += Name + " pop has appeared!";
+		Dialogue::print_line(introduction);
 	};
 
-	Enemy(bool skip) {};
-
-	Enemy(std::string name) {
+	Enemy(const char* name) {
 		Name = name;
+		std::string introduction = "";
 		if (name == "Bishop") {
 			Health = 20;
-			Introduction = "Oh, no! It's the Bishop!";
+			introduction = "Oh, no! It's the Bishop!";
 		}
 		else if (name == "Knight") {
 			Health = 40;
-			Introduction = "Oh, no! It's the Bishop!";
+			introduction = "Oh, no! It's the Bishop!";
 		}
 		else if (name == "Rook") {
 			Health = 60;
-			Introduction = "Oh, no! It's the Bishop!";
+			introduction = "Oh, no! It's the Bishop!";
 		}
 		else if (name == "King") {
 			Health = 180;
-			Introduction = "The legends are true...\n It's the King!";
+			introduction = "The legends are true...\nIt's the King!";
 		}
-		Dialogue::print_line(Introduction);
+		Dialogue::print_line(introduction);
 	};
+
+	Enemy(bool skip) {};
 };

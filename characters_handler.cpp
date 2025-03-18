@@ -1,9 +1,11 @@
 #include "characters_handler.h"
 
 Enemy* lolipop = new Enemy(false);
+Player player = Player();
+
 
 Player Characters_Handler::get_player() {
-	return Player();
+	return player;
 };
 
 void Characters_Handler::spawn_enemy(const std::string& roomname) {
@@ -30,25 +32,17 @@ bool Characters_Handler::attack_enemy(bool& combat) {
 		return false;
 	}
 	else {
-		get_player().increment_licks();
-		int damage = get_player().roll_damage();
+		player.increment_licks();
+		player.increment_sugar();
+		int damage = player.roll_damage();
 		Dialogue::print_line("You managed to get " + std::to_string(damage) + " licks!");
 		lolipop->Health -= damage;
 		if (lolipop->Health < 1) {
-			if (lolipop->Name == "Bishop") {
-				Dialogue::print_line(Collections::get_room("Garage").defeat_boss());
-			}
-			if (lolipop->Name == "Knight") {
-				Dialogue::print_line(Collections::get_room("Attic").defeat_boss());
-			}
-			if (lolipop->Name == "Rook") {
-				Dialogue::print_line(Collections::get_room("Basement").defeat_boss());
-			}
-			if (lolipop->Name == "King") {
-				Dialogue::print_line(Collections::get_room("Hidden Room").defeat_boss());
+			if (lolipop->Name == "Bishop" || lolipop->Name == "Knight" || lolipop->Name == "Rook" || lolipop->Name == "King") {
+				Room_Handler::defeat_boss();
 			}
 
-			get_player().eat_candy();
+			player.eat_candy();
 
 			return false;
 		}
@@ -56,9 +50,8 @@ bool Characters_Handler::attack_enemy(bool& combat) {
 	};
 };
 
-void Characters_Handler::attack_boss(const std::string& message) {
+void Characters_Handler::attack_boss() {
 	lolipop->Health = 0;
-	Dialogue::print_line(message);
 };
 
 void Characters_Handler::attack_boss(int damage) {

@@ -8,6 +8,14 @@ void Room::add_gettable_item(std::set<std::string> items) {
 	}
 };
 
+void Room::add_useable_item(std::string item) {
+	Usable_items.insert(item);
+};
+
+void Room::remove_useable_item(std::string item) {
+	Usable_items.erase(item);
+};
+
 void Room::add_useable_item(std::set<std::string> items) {
 	for (std::string item : items) {
 		Usable_items.insert(item);
@@ -16,9 +24,23 @@ void Room::add_useable_item(std::set<std::string> items) {
 
 void Room::add_interactable(std::set<std::string> items) {
 	for (std::string item : items) {
-		Room_interactables.insert(item);
+		Room::Room_interactables.insert(item);
 	};
 };
+
+bool Room::verify_item(std::string item) {
+	if (Usable_items.find(item) != Usable_items.end()) {
+		return true;
+	}
+	if (Room_interactables.find(item) != Room_interactables.end()) {
+		return true;
+	}
+	return false;
+};
+
+void Room::unlock_room() { Locked = false; }
+
+void Room::defeat_boss() { Boss_defeated = true; }
 
 Room::Room(std::string name, std::string description, double encounter_chance, std::set<std::string> getItems, std::set<std::string> interactables) {
 	Name = name;
@@ -28,40 +50,22 @@ Room::Room(std::string name, std::string description, double encounter_chance, s
 	add_interactable(interactables);
 	if (Name == "Attic") {
 		Locked = true;
-		auto defeat_boss = [this]() {
-			Boss_defeated = true;
-			std::string message = "You see the small gilded CHEST your grandmother bequeathed you, just as you left it.\nYour camping LANTERN rests on some boxes of halloween decorations.";
-			Get_items.insert("lantern");
-			Room_interactables.insert("chest");
-			return message;
-			};
+		Boss_defeated = false;
 	}
 	else if (Name == "Basement") {
 		Locked = true;
-		auto defeat_boss = [this]() {
-			Boss_defeated = true;
-			std::string message = "The pale glow of the lantern illuminates the FURNACE and the WATER MAIN.\n On a wall rack, you see your METAL DETECTOR and SHOVEL.";
-			Description = Description.substr(0, Description.find("\n")) + "\n" + message;
-			return message;
-			};
+		Boss_defeated = false;
 	}
 	else if (Name == "Garage") {
 		Locked = true;
-		auto defeat_boss = [this]() {
-			Boss_defeated = true;
-			std::string message = "";
-			Description += " " + message;
-			return message;
-			};
+		Boss_defeated = false;
 	}
 	else if (Name == "Hidden Room") {
-		auto defeat_boss = [this]() {
-			Boss_defeated = true;
-			std::string message = "";
-			return message;
-			};
+		Boss_defeated = false;
 	}
-
 };
 
-bool Room::roll_encounter() { return (Encounter_chance * (rand() % 101)) > 30; };
+bool Room::roll_encounter() { 
+	if (Name == "Basement" || Name == "Attic" || Name == "Garage" || Name == "Hidden Room") { return !Locked && !Boss_defeated; }
+	return (Encounter_chance * (rand() % 101)) > 30; 
+};

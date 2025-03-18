@@ -3,7 +3,10 @@
 #include "input_action.h"
 #include "characters_handler.h"
 #include "room_handler.h"
+#include "item_handler.h"
 #include "hints.h"
+#include "items.cpp"
+#include "interactables.cpp"
 #ifdef _DEBUG
 #include "cheat.h"
 #endif
