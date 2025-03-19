@@ -6,37 +6,6 @@
 #include <string>
 #include <set>
 
-class Room
-{
-private:
-	double Encounter_chance;
-
-public:
-	Room() { Name = ""; };
-	Room(std::string name, std::string description, double encounter_chance, std::set<std::string> get_items, std::set<std::string> interactable_items, std::set<std::string> usable_items);
-	
-	/// <summary>
-	/// Multiply room encounter chance by random number to determine if enemy spawns
-	/// </summary>
-	/// <returns>Whether or not to spawn enemy</returns>
-	bool roll_encounter();
-
-	std::string Name;
-	std::string Description;
-
-	std::set<std::string> Get_items{};
-
-	std::set<std::string> Useable_items {
-		"tool belt",
-		"water bottle",
-		"mouthguard",
-		"dentures",
-		"mints",
-		"batteries" };
-
-	std::set<std::string> Interactables{ "light switch" };
-};
-
 struct Room_Handler
 {
 	static Map_Handler Map;

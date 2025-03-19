@@ -1,8 +1,9 @@
 #include "map_handler.h"
+#include "stuff_handler.h"
 
 Room* Map_Handler::get_room(const std::string& room_name) {
 	for (Room* room : Rooms) {
-		if (room->Name == room_name) {
+		if (Dialogue::lowercase(room->Name) == Dialogue::lowercase(room_name)) {
 			return room;
 		}
 	}
@@ -101,8 +102,9 @@ std::string Map_Handler::unlock(std::string room_name) {
 		add_interactable("Garage", { "sander" });
 	}
 	else {
-		Dialogue::print_line("Uh oh... This room wasn't locked and I wasn't supposed to allow you to unlock it...\nIf you're reading this... something... somewhere has definitely broken... Sorry.");
+		message = "Uh oh... This room wasn't locked and I wasn't supposed to allow you to unlock it...\nIf you're reading this... something... somewhere has definitely broken... Sorry.";
 	}
+	return message;
 };
 
 void Map_Handler::add_get_item(const std::string& room_name, std::set<std::string> items) {

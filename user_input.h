@@ -25,5 +25,13 @@ public:
 	/// <param name="action">Action missing target</param>
 	/// <param name="message">Text prompt</param>
 	/// <returns>Action with supplied target</returns>
-	static Input_Action get_target(Input_Action& action, std::string message);
+	static Input_Action get_action(const std::string& message);
+	
+	/// <summary>
+	/// If target left blank when required, prompts user for new target
+	/// </summary>
+	/// <param name="action">Action missing target</param>
+	/// <param name="message">Text prompt</param>
+	/// <returns>Action with supplied target</returns>
+	static Input_Action get_target(Input_Action& action, const std::string& message);
 };

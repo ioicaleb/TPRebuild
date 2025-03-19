@@ -1,15 +1,45 @@
 #pragma once
-#include "stuff_handler.h"
-#include "room_handler.h"
+#include <set>
+#include <string>
+
+class Room
+{
+private:
+	double Encounter_chance;
+
+public:
+	/// <summary>
+	/// Multiply room encounter chance by random number to determine if enemy spawns
+	/// </summary>
+	/// <returns>Whether or not to spawn enemy</returns>
+	bool roll_encounter();
+
+	std::string Name;
+	std::string Description;
+
+	std::set<std::string> Get_items{};
+
+	std::set<std::string> Useable_items{
+		"tool belt",
+		"water bottle",
+		"mouthguard",
+		"dentures",
+		"mints",
+		"batteries" };
+
+	std::set<std::string> Interactables{ "light switch" };
+	
+	Room(std::string name, std::string description, double encounter_chance, std::set<std::string> get_items, std::set<std::string> interactable_items, std::set<std::string> usable_items);
+};
 
 struct Map_Handler
 {
-	std::vector<Room*> Rooms = { &Attic, &Backyard, &Basement, &Bathroom, &Dining_room, &Garage, &Guest_bedroom, &Kitchen, &Living_room, &Master_bedroom, &Office, &Pantry };
+	std::set<Room*> Rooms = { &Attic, &Backyard, &Basement, &Bathroom, &Dining_room, &Garage, &Guest_bedroom, &Kitchen, &Living_room, &Master_bedroom, &Office, &Pantry };
 
 	/// <summary>
 	/// Adds the Hidden room to rooms list
 	/// </summary>
-	void add_hidden_room() { Rooms.push_back(&Hidden_room); };
+	void add_hidden_room() { Rooms.insert(&Hidden_room); };
 
 	bool Locked_Garage = true;
 	bool Locked_Attic = true;

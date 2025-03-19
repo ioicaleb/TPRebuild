@@ -40,3 +40,12 @@ void Stuff_Handler::handle_use_switch(const std::string& item_name) {
 		Dialogue::print_line("There's no " + item_name + " to use.");
 	}
 };
+
+void Stuff_Handler::get_all_inventory() {
+	for (Item* itemptr : Inventory) {
+		Item item = *itemptr;
+		if (item.Name != "tool belt") {
+			Dialogue::print_line(item.Name);
+		}
+	}
+}

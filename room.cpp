@@ -4,23 +4,20 @@ Room::Room(std::string name, std::string description, double encounter_chance, s
 	Name = name;
 	Description = description;
 	Encounter_chance = encounter_chance;
-	Room_Handler::Map.add_get_item(Name, get_items);
-	Room_Handler::Map.add_interactable(Name, interactable_items);
-	Room_Handler::Map.add_use_item(Name, useable_items);
+	for (std::string item : get_items) {
+		Get_items.insert(item);
+	}
+	for (std::string item : interactable_items) {
+		Interactables.insert(item);
+	}
+	for (std::string item : useable_items) {
+		Useable_items.insert(item);
+	}
 };
 
 bool Room::roll_encounter() {
-	if (Name == "Basement") {
-		return true;
-	}
-	else if (Name == "Attic") {
-		return true;
-	}
-	else if (Name == "Garage") {
-		return true;
-	}
-	else if (Name == "Hidden Room") {
-		return true;
+	if (Name == "Basement" || Name == "Attic" || Name == "Garage" || Name == "Hidden Room") {
+		return !Room_Handler::Map.verify_boss(Name) && !Room_Handler::Map.verify_locked(Name);
 	}
 	return (Encounter_chance * (rand() % 101)) > 30;
 };

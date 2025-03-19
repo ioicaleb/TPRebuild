@@ -3,21 +3,21 @@
 
 static bool combat = false;
 
-std::map<std::string, std::string> Valid_inputs = {
-	std::string("Move") = "(Room) All done in this room? Move on to the next room, but watch out for potential tootsie pops.",
-	std::string("Lick") = "The only way to get to the center is to erode the candy coating. Get licking!",
-	std::string("Sugar") = "Strategy, eh? Well if you're worried about taking that next lick, confirm your sugar level before going for it.",
-	std::string("Map") = "This house is so big that it's easy to get lost in. Pull out the map to see where to go next.",
-	std::string("Search") = "You may have missed something you can interact with. Take another look around.",
-	std::string("Check") = "(Item) You remember that thing you picked up earlier? It might be useful. Check it out just to be sure.",
-	std::string("Use") = "(Item) Those items in your pack aren't just there to look pretty. Put them to good use",
-	std::string("Get") = "(Item) Your supplies have been scattered. You must recover them. If you come across one, use this to add it to your tool belt.",
-	std::string("Hint") = "In the stress and surprise, you may have forgotten your master plan. That's fine. You can scan your mind for bits of the plan.",
-	std::string("Help") = "It helps to take time to reflect on your options. Help yourself out by stopping for a breather.",
+std::map<std::string, std::string> Valid_inputs {
+	{"Move", "(Room) All done in this room? Move on to the next room, but watch out for potential tootsie pops."},
+	{"Lick", "The only way to get to the center is to erode the candy coating. Get licking!"},
+	{"Sugar", "Strategy, eh? Well if you're worried about taking that next lick, confirm your sugar level before going for it."},
+	{"Map", "This house is so big that it's easy to get lost in. Pull out the map to see where to go next."},
+	{"Search", "You may have missed something you can interact with. Take another look around."},
+	{"Check", "(Item) You remember that thing you picked up earlier? It might be useful. Check it out just to be sure."},
+	{"Use", "(Item) Those items in your pack aren't just there to look pretty. Put them to good use"},
+	{"Get", "(Item) Your supplies have been scattered. You must recover them. If you come across one, use this to add it to your tool belt."},
+	{"Hint", "In the stress and surprise, you may have forgotten your master plan. That's fine. You can scan your mind for bits of the plan."},
+	{"Help", "It helps to take time to reflect on your options. Help yourself out by stopping for a breather."},
 #ifdef _DEBUG
-	std::string("Gimme") = "Shhhh... Debugging is long and hard. Just do it for me.",
+	{"Gimme", "Shhhh... Debugging is long and hard. Just do it for me."},
 #endif
-	std::string("Quit") = "There are no saves, but you can quit out whenever you feel like it."
+	{"Quit", "There are no saves, but you can quit out whenever you feel like it."}
 };
 
 static void list_help() {
@@ -26,7 +26,7 @@ static void list_help() {
 	}
 }
 
-void Input_Handler::handle_action(const Input_Action& action)
+void Input_Handler::handle_action(Input_Action& action)
 {
 	if (action.command == "lick") {
 		combat = Characters_Handler::attack_enemy(combat);
@@ -36,74 +36,79 @@ void Input_Handler::handle_action(const Input_Action& action)
 		}
 	}
 	else if (action.command == "move") {
-			Room_Handler::change_room(action.target, combat);
+		action = action.target == "" ? User_Input::get_target(action, "Which room would you like to go to?") : action;
+		if(Room_Handler::change_room(action.target, combat))
+		{
+			Characters_Handler::spawn_enemy(Room_Handler::get_current_location());
+		}
 	}
 	else if (action.command == "map") {
 		Room_Handler::view_rooms();
 	}
 	else if (action.command == "check") {
-		Item item = Collections::get_item(action.target);
-		if (item.Name == "")
+		action = action.target == "" ? User_Input::get_target(action, "Which item would you like to check?") : action;
+		Item* itemptr = Stuff_Handler::get_itemptr(action.target);
+		if (itemptr == nullptr)
 		{
-			Interactable interact = Collections::get_interactable(action.target);
-			if (interact.Name != "") {
-				Dialogue::print_line(interact.Description);
+			Interactable* interactptr = Stuff_Handler::get_interactptr(action.target);
+			if (interactptr != nullptr) {
+				Dialogue::print_line((*interactptr).Description);
 			}
 			else {
 				Dialogue::print_line("There's no " + action.target + " to check.");
 			}
 		}
 		else {
-			Dialogue::print_line(item.Description);
+			Dialogue::print_line((*itemptr).Description);
 		}
 	}
 	else if (action.command == "use") {
+		action = action.target == "" ? User_Input::get_target(action, "Which item would you like to use?") : action;
 		if (action.target == "sink") {
 			if (Room_Handler::get_current_location() == std::string("Kitchen")) {
-				Stuff_Handler::handle_use_item(Collections::get_interactable("kitchen sink"));
+				Stuff_Handler::handle_use_switch("kitchen sink");
 			}
 			else if (Room_Handler::get_current_location() == std::string("Bathroom")) {
-				Stuff_Handler::handle_use_item(Collections::get_interactable("bathroom sink"));
+				Stuff_Handler::handle_use_switch("bathroom sink");
 			}
 		}
 		else if (action.target == "bed") {
 			if (Room_Handler::get_current_location() == std::string("Master Bedroom")) {
-				Stuff_Handler::handle_use_item(Collections::get_interactable("master bed"));
+				Stuff_Handler::handle_use_switch("master bed");
 			}
 			else if (Room_Handler::get_current_location() == std::string("Guest Bedroom")) {
-				Stuff_Handler::handle_use_item(Collections::get_interactable("guest bed"));
+				Stuff_Handler::handle_use_switch("guest bed");
 			}
 		}
 		else {
-			Item item = Collections::get_item(action.target);
-			if (item.Name == "")
-			{
-				Interactable interact = Collections::get_interactable(action.target);
-				if (interact.Name != "") {
-					Stuff_Handler::handle_use_item(interact);
-				}
-				else {
-					Dialogue::print_line("There's no " + action.target + " that you can use.");
-				}
+			Stuff_Handler::handle_use_switch(action.target);
+			if (action.target == "key" && Room_Handler::get_current_location() == "Garage" && !Room_Handler::Map.verify_boss("Garage")) {
+				combat = true;
+				Characters_Handler::spawn_enemy("Garage");
 			}
-			else {
-				Stuff_Handler::handle_use_item(item);
-				if (((item.Name == "key" && Room_Handler::get_current_location() == "Garage") || (item.Name == "ladder" && Room_Handler::get_current_location() == "Attic") || (item.Name == "camping lanter" && Room_Handler::get_current_location() == "Basement") ) && !Room_Handler::Map.verify_boss()) {
-					combat = true;
-					Characters_Handler::spawn_enemy(Room_Handler::get_current_location());
-				}
+			else if (action.target == "ladder" && Room_Handler::get_current_location() == "Attic" && !Room_Handler::Map.verify_boss("Attic")) {
+				combat = true;
+				Characters_Handler::spawn_enemy("Attic");
+			}
+			else if (action.target == "camping lantern" && Room_Handler::get_current_location() == "Basement" && !Room_Handler::Map.verify_boss("Basement")) {
+				combat = true;
+				Characters_Handler::spawn_enemy("Basement");
 			}
 		}
+
 	}
 	else if (action.command == "get") {
-		Item item = Collections::get_item(action.target);
-		if (item.Name != "") {
-			if(Collections::add_item(item)) {
-				Item_Handler::handle_get_item(item.Name);
+		action = action.target == "" ? User_Input::get_target(action, "Which item would you like to get?") : action;
+		if (Stuff_Handler::verify_item(action.target)) {
+			if (Stuff_Handler::add_item(action.target)) {
+				Stuff_Handler::handle_get_item(action.target);
+			}
+			else {
+				Dialogue::print_line("You can't fit " + action.target + " anywhere on your TOOLBELT.");
 			}
 		}
 		else {
-			Dialogue::print_line("You can't fit " + action.target + " anywhere on your TOOLBELT.");
+			Dialogue::print_line("You can't take a" + Dialogue::starts_vowel(action.target) + action.target + " with you.");
 		}
 	}
 	else if (action.command == "help") {
@@ -134,4 +139,7 @@ void Input_Handler::handle_action(const Input_Action& action)
 	}
 }
 
-void Input_Handler::create_send_action(const char* command) { handle_action(Input_Action(std::string(command))); };
+void Input_Handler::create_send_action(const std::string& command) { 
+	Input_Action action = Input_Action(command);
+	handle_action(action); 
+};

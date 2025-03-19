@@ -12,18 +12,20 @@ static Item create_item(std::string name, std::string description)
 Item Batteries = create_item(std::string("batteries"), "Four C batteries that should have enough juice to power the lantern for as long as you need.");
 Item Lantern = create_item(std::string("camping lantern"), "\"For Use In Emergencies\" feels very appropriate right now. The lantern requires 4 'C' batteries, which are not included currently.");
 Item Dentures = create_item(std::string("dentures"), "A set of false teeth that look weak but may be able to give you a little more bite. You can bite more aggressively with these on.");
-Item hints = create_item(std::string("hint list"), "A list of steps of your master plan. Can be checked by typing \"Hint\" at any time.");
-Item key = create_item(std::string("key"), "A silver key with a green rubber cap to identify it as the garage key. The rubber is worn down where you have picked at it. Why you have a special lock and key for a single room is beyond you, but you weren't the one who designed and built this house.");
-Item knife = create_item(std::string("knife"), "The various tools on the utility knife have been worn down. The screwdriver is bent. The corkscrew is fine, but you don't drink wine. The magnifying glass is stuck. The only thing that seems useful is the small knife.\nIt's a little dull from your whittling practice, but your duck carvings are getting much better.");
-Item ladder = create_item(std::string("ladder"), "The lolipop sticks surprisingly support your weight without any sign of breaking. You even fashioned convenient places to put your hands.");
-Item detector = create_item(std::string("metal detector"), "A relatively small, relatively weak metal detector that should be plenty to find what you might need.");
-Item mints = create_item(std::string("mints"), "A handful of spearmint candies. The smell is powerful enough that you can smell them from your hand. You did dig these out from your couch cushions so they are covered in lint and some unidentifiable crumbs.");
-Item mouthguard = create_item("mouthguard", "A plastic mouth guard that you found again just recently. You constantly feel it against the roof of your mouth, but it will protect your teeth from the sugar.");
-Item shovel = create_item(std::string("shovel"), "A metal shovel with a wooden shaft and a comfortable plastic grip. You haven't used it much since you planted your garden.");
-Item tool_belt = create_item("tool belt", "A modified utilty belt prepared to hold any items you find that seem useful, no matter how impratically sized.");
-Item bottle = create_item("water bottle", "A tall, large, green water bottle you stored for an emergency like this.");
+Item Hints = create_item(std::string("hint list"), "A list of steps of your master plan. Can be checked by typing \"Hint\" at any time.");
+Item Key = create_item(std::string("key"), "A silver key with a green rubber cap to identify it as the garage key. The rubber is worn down where you have picked at it. Why you have a special lock and key for a single room is beyond you, but you weren't the one who designed and built this house.");
+Item Knife = create_item(std::string("knife"), "The various tools on the utility knife have been worn down. The screwdriver is bent. The corkscrew is fine, but you don't drink wine. The magnifying glass is stuck. The only thing that seems useful is the small knife.\nIt's a little dull from your whittling practice, but your duck carvings are getting much better.");
+Item Ladder = create_item(std::string("ladder"), "The lolipop sticks surprisingly support your weight without any sign of breaking. You even fashioned convenient places to put your hands.");
+Item Metal_detector = create_item(std::string("metal detector"), "A relatively small, relatively weak metal detector that should be plenty to find what you might need.");
+Item Mints = create_item(std::string("mints"), "A handful of spearmint candies. The smell is powerful enough that you can smell them from your hand. You did dig these out from your couch cushions so they are covered in lint and some unidentifiable crumbs.");
+Item Mouthguard = create_item("mouthguard", "A plastic mouth guard that you found again just recently. You constantly feel it against the roof of your mouth, but it will protect your teeth from the sugar.");
+Item Shovel = create_item(std::string("shovel"), "A metal shovel with a wooden shaft and a comfortable plastic grip. You haven't used it much since you planted your garden.");
+Item Tool_belt = create_item("tool belt", "A modified utilty belt prepared to hold any items you find that seem useful, no matter how impratically sized.");
+Item Water_bottle = create_item("water bottle", "A tall, large, green water bottle you stored for an emergency like this.");
 
-std::vector<Item> Stuff_Handler::All_items = {};
+std::vector<Item> Stuff_Handler::All_items = { Batteries, Lantern, Dentures, Hints, Key, Knife, Ladder, Metal_detector, Mints, Mouthguard, Shovel, Tool_belt, Water_bottle };
+
+std::vector<Item*> Stuff_Handler::Inventory = {};
 
 Item* Stuff_Handler::get_itemptr(const std::string& item_name)
 {
@@ -165,15 +167,17 @@ void Stuff_Handler::handle_use_item(const std::string& item_name)
 			}
 		}
 		else if (item_name == "shovel") {
-			if ()
+			if ((*Room_Handler::Map.get_room("Backyard")).Interactables.find("buried switch") == (*Room_Handler::Map.get_room("Backyard")).Interactables.end())
 			{
-				(Room_Handler::Map.get_room("Backyard")).add_interactable({ "buried switch" });
+				Room_Handler::Map.add_interactable("Backyard", { "buried switch" });
 				message = "You scoop up the loose dirt with ease. It's not long before you uncover a strange metal plate with a SWITCH covered in a plastic case.";
 			}
-			else if (Room_Handler::get_current_location() == "Hidden Room" && !Room_Handler::Map.verify_boss())
+			else if (Room_Handler::get_current_location() == "Hidden Room" && !Room_Handler::Map.verify_boss("Hidden Room"))
 			{
 				message = "You unstrap your trusty shovel. With a barbaric shout, you wallop the king, bashing layer after layer from it's shell. You smash until the wooden handle on your shovel cracks and splinters in two.";
-				Room_Handler::Map.remove_use_item();
+				Room_Handler::Map.remove_use_item("Hidden room", { "shovel" });
+				Room_Handler::Map.remove_use_item("Backyard", { "shovel" });
+				Stuff_Handler::remove_item("shovel");
 				Characters_Handler::attack_boss(25);
 			}
 			else
@@ -183,7 +187,7 @@ void Stuff_Handler::handle_use_item(const std::string& item_name)
 		}
 		else if (item_name == "tool belt") {
 			Dialogue::print_line("You look at your belt to see what all you've collected.");
-			Collections::get_all_inventory();
+			Stuff_Handler::get_all_inventory();
 		}
 		else if (item_name == "water bottle") {
 			if (Water_available > 0)
@@ -215,11 +219,12 @@ void Stuff_Handler::handle_use_item(const std::string& item_name)
 			{
 				message = "The bottle is empty. No matter how hard you try, you can't get so much as a drop.";
 			}
-			if (Room_Handler::get_current_location() == "Hidden Room" && Water_available > 0 && !Room_Handler::Map.verify_boss())
+			if (Room_Handler::get_current_location() == "Hidden Room" && Water_available > 0 && !Room_Handler::Map.verify_boss("Hidden Room"))
 			{
 				message = "Knowing this is your last chance to use it, you spray all of your remaining water over the king. The powerful spray wears down his thick outer shell. ";
 				Characters_Handler::attack_boss(Water_available);
-				Room_Handler::Map.remove_use_item();
+				Room_Handler::Map.remove_use_item("Hidden Room", {"water bottle"});
+				Stuff_Handler::remove_item("water bottle");
 			}
 		}
 	}

@@ -1,38 +1,36 @@
 #pragma once
 #include "tutorial.h"
+#include "stuff_handler.h"
 
 static bool combat = false;
 
 static void set_room_for_tutorial() { Room_Handler::get_current_location() = "Master Bedroom"; };
-static void reset_room() { Room_Handler::change_room(Collections::get_room("Master Bedroom"), combat); };
+static void reset_room() { Room_Handler::change_room("Master Bedroom", combat); };
 static void handle_action(const Input_Action& action)
 {
 	if (action.command == "move") {
-		Room_Handler::change_room(Collections::get_room(action.target), combat);
+		Room_Handler::change_room(action.target, combat);
 	}
 	else if (action.command == "use") {
-		Item item = Collections::get_item(action.target);
-		if (item.Name == "")
-		{
-			Interactable interact = Collections::get_interactable(action.target);
-			if (interact.Name != "") {
-				Item_Handler::handle_use_item(interact);
-			}
-			else {
-				Dialogue::print_line("There's no " + action.target + " that you can use.");
-			}
+		if (action.target == "bed") {
+			Stuff_Handler::handle_use_switch("master bed");
 		}
 		else {
-			Item_Handler::handle_use_item(item);
+			Stuff_Handler::handle_use_switch(action.target);
 		}
+
 	}
 	else if (action.command == "get") {
-		Item item = Collections::get_item(action.target);
-		if (item.Name != "") {
-			Collections::add_item(item);
+		if (Stuff_Handler::verify_item(action.target)) {
+			if (Stuff_Handler::add_item(action.target)) {
+				Stuff_Handler::handle_get_item(action.target);
+			}
+			else {
+				Dialogue::print_line("You can't fit " + action.target + " anywhere on your TOOLBELT.");
+			}
 		}
 		else {
-			Dialogue::print_line("You can't fit " + action.target + " anywhere on your TOOLBELT.");
+			Dialogue::print_line("You can't take a" + Dialogue::starts_vowel(action.target) + action.target + " with you.");
 		}
 	}
 	else if (action.command == "search") {

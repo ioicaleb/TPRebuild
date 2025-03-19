@@ -20,11 +20,11 @@ public:
 	};
 };
 
-class Item {
-	bool operator==(const Item& rhs) const {
-		return this->Name == rhs.Name;
-	}
-public:
+struct Item {
+	bool operator==(const Item* rhs) const {
+		return this->Name == rhs->Name;
+	};
+
 	std::string Name;
 	std::string Description;
 
@@ -40,7 +40,6 @@ struct Stuff_Handler
 
 	static std::vector<Item> All_items;
 	static std::vector<Interactable> All_interactables;
-
 	static std::vector<Item*> Inventory;
 
 	/// <summary>
@@ -60,11 +59,6 @@ struct Stuff_Handler
 	/// </summary>
 	/// <param name="name">Name of item that is being gotten</param>
 	static void handle_get_item(std::string name);
-
-	static std::vector<Item> All_items;
-	static std::vector<Interactable> All_interactable;
-
-	static std::vector<Item*> Inventory;
 
 	/// <summary>
 	/// Get a pointer to specified item if it exists
@@ -119,4 +113,6 @@ struct Stuff_Handler
 	/// </summary>
 	/// <param name="item_name">Name of item to be used</param>
 	static void handle_use_switch(const std::string& item_name);
+
+	static void get_all_inventory();
 };

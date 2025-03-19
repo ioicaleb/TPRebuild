@@ -2,7 +2,7 @@
 
 static std::string Current_location = "Master Bedroom";
 
-static Map_Handler Map = Map_Handler();
+Map_Handler Room_Handler::Map = Map_Handler();
 
 bool Room_Handler::change_room(const std::string& target, bool& combat) {
 	Room* roomptr = Map.get_room(target);
@@ -22,7 +22,7 @@ bool Room_Handler::change_room(const std::string& target, bool& combat) {
 
 	combat = room.roll_encounter();
 
-	return true;
+	return combat;
 };
 
 void Room_Handler::view_rooms() {

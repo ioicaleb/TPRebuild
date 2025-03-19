@@ -24,8 +24,8 @@ Interactable Bathtub = create_item(std::string("bathtub"), "A large, white batht
 Interactable Buried_switch = create_item(std::string("buried switch"), "A metal plate with a blinking switch under a plastic plate. Where did this come from and what was it hiding?", "What switch? There's no switch here.");
 Interactable Cabinet = create_item(std::string("cabinet"), "The handleless doors of the cabinets look like they could use a cleaning, but you're overall proud of your kitchen.", "You open the cabinet doors.");
 Interactable Candles = create_item(std::string("candles"), "A set of tall candles that line the dining room table. They're in pristine condition as you've never lit them.\nYou always intended to use them for a romantic or meaningful dinner but never think to light them when the occassion seems right.", "You think about removing the candles but don't want only one of the candles to be slightly used. You have a minor panic attack plotting how to make sure that they are both evenly used without wasting them.");
-Interactable Chair = create_item(std::string("chair"), "An affordable wooden chair with a cushioned seat. Well-maintained and recently reupholstered, you're very proud of your dining room chairs.", "You consider standing on the chairs but decide against it. The cushions are in great shape, and you don't want to risk falling and ending the game prematurely.");
 Interactable Car = create_item(std::string("car"), "A car of a model that has been discontinued and a make that you're not sure ever existed. It's currently locked and you don't remember where your keys are.\nAll you can tell is that you didn't put them back on the hook. Just as well, running from this fight wouldn't solve anything.", "You still haven't found your car keys. The car continues to be inaccessible.");
+Interactable Chair = create_item(std::string("chair"), "An affordable wooden chair with a cushioned seat. Well-maintained and recently reupholstered, you're very proud of your dining room chairs.", "You consider standing on the chairs but decide against it. The cushions are in great shape, and you don't want to risk falling and ending the game prematurely.");
 Interactable Chest = create_item(std::string("chest"), "A dusty, vintage looking chest. It's been locked since you received it from your grandmother.\nYou've tried unlocking it, but it seems stuck. The only way to open it would be to damage it.\nYou've refused to do that, choosing instead to keep it from harm in honor of Gram-Gram.", "You haven't been able to open this chest without damaging it until now, when you continue to be unable to open it. The chest is probably more important than anything inside.");
 Interactable Closet = create_item(std::string("closet"), "A modest sized closet where you hang your work clothes and fashionable outfits.", "You open the doors to see your nicer shirts and formal wear hanging neatly in a row.");
 Interactable Computer = create_item(std::string("computer"), "The old girl is just as reliable as the day you got her, which is to say not very.", "You spot a folder of unfinished projects that were started and abandoned. You don't have the time right now. Just definitely don't forget to work on them when things calm down...");
@@ -43,7 +43,7 @@ Interactable Light_switch = create_item(std::string("light switch"), "While the 
 Interactable Master_bed = create_item(std::string("master bed"), "A cozy king - sized bed.You like your mattress firm and your pillows soft.\nWhen you're done battling lolipops, you should probably change the sheets. Clean, fresh sheets would be a nice way to celebrate.", "");
 Interactable Medicine_cabinet = create_item(std::string("medicine cabinet"), "The mirror stands out from the wall. Behind it is your medicine cabinet, which may hold something of use.", "Behind the mirror are three shelves. Most of what's on them is not helpful");
 Interactable Milk_crates = create_item(std::string("milk crates"), "Plastic crates that were left here by the previous owner. You constantly debate back and forth about getting rid of them but worry they might be useful one day.", "The milk crates don't seem to have much use right now.");
-Interactable Stand = create_item(std::string("night stand"), "A small cherry nightstand with a reading lamp on top. The bulb has burned out, which you make a note to replace, intending to actually follow through this time.", "You open each drawer but find nothing that could be of any assistance.");
+Interactable Nightstand = create_item(std::string("night stand"), "A small cherry nightstand with a reading lamp on top. The bulb has burned out, which you make a note to replace, intending to actually follow through this time.", "You open each drawer but find nothing that could be of any assistance.");
 Interactable Sander = create_item(std::string("sander"), "A belt sander that looks like it could do some real damage. If the cord wasn't so short, you might be able to really put the hurt on some lolipops.", "The sander doesn't seem to have much use right now.");
 Interactable Bathroom_sink = create_item(std::string("bathroom sink"), "A small sink with a mirror above it. Your toothbrush sits in a cup next to a mostly empty tube of toothpaste.", "No matter how hard you try, you can't get any water out of the sink.");
 Interactable Kitchen_sink = create_item(std::string("kitchen sink"), "A single-chambered metal sink that is currently empty. You cleaned all of your dishes the night before.", "No matter how hard you try, you can't get any water out of the sink.");
@@ -53,8 +53,14 @@ Interactable Towel = create_item(std::string("towel"), "A solid blue towel that 
 Interactable Water_bowl = create_item(std::string("water bowl"), "A small bowl with \"Domino\" across the front. The water dish glistens with fresh water. You don't have any pets which gives you pause but that seems like an issue for another time.", "The bowl seems to be in pristine condition. Where did it come from? How did it get filled with water? You move on without thinking too hard about it.");
 Interactable Water_main = create_item(std::string("water main"), "A pipe with a bright yellow handle that controls the flow of water to the entire house. It's currently off.", "Turning the handle off and on doesn't seem to be having any further effect.");
 
+std::vector<Interactable> Stuff_Handler::All_interactables{ 
+	Bathtub, Buried_switch, Cabinet, Candles, Car, Chair, Chest, Closet, Computer, Couch, Bench, Desk, Dresser, Endgame_button, Fridge, Furnace,
+	Guest_bed, Home_gym, Lawnmower, Light_switch, Master_bed, Medicine_cabinet, Milk_crates, Nightstand, Sander, Bathroom_sink, Kitchen_sink, Table,
+	Toilet, Towel, Water_bowl, Water_main
+};
+
 Interactable* Stuff_Handler::get_interactptr(const std::string& item_name) {
-	for (Interactable item : All_interactables) {
+	for (Interactable& item : All_interactables) {
 		if (item.Name == item_name) {
 			return &item;
 		}
@@ -62,9 +68,11 @@ Interactable* Stuff_Handler::get_interactptr(const std::string& item_name) {
 	return nullptr;
 }
 
+
 void Stuff_Handler::handle_use_interact(const std::string& item_name)
 {
-	Interactable item = *get_interactptr(item_name);
+	Interactable* itemptr = get_interactptr(item_name);
+	Interactable item = (*itemptr);
 	std::string message = item.Use_message;
 	if (item.Name == "master bed") {
 		if (Bed_made_master)

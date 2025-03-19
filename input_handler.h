@@ -16,13 +16,13 @@ struct Input_Handler {
 	/// Sends command to appropriate handler
 	/// </summary>
 	/// <param name="action"></param>
-	static void handle_action(const Input_Action& action);
+	static void handle_action(Input_Action& action);
 
 #ifdef _DEBUG
 	/// <summary>
 	/// Allows cheat to send commands without waiting for user input
 	/// </summary>
 	/// <param name="action"></param>
-	static void create_send_action(const char* action);
+	static void create_send_action(const std::string& action);
 #endif
 };

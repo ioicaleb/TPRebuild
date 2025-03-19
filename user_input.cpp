@@ -30,7 +30,9 @@ bool User_Input::get_bool(const std::string& message) {
 	}
 };
 
-Input_Action User_Input::get_target(Input_Action& action, std::string message) { 
+Input_Action User_Input::get_action(const std::string& message) { return Input_Action(User_Input::get_input(message)); };
+
+Input_Action User_Input::get_target(Input_Action& action, const std::string& message) { 
 	action.target = User_Input::get_input(message);
 	return action;
 };

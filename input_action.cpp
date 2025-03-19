@@ -12,5 +12,6 @@ Input_Action::Input_Action(const std::string& input) {
 	}
 	else {
 		this->command = input;
+		this->target = "";
 	}
 };

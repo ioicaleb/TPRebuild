@@ -12,9 +12,7 @@ public:
 		srand(time(NULL));
 		Name = Flavors[rand() % 5];
 		Health = 10;
-		std::string introduction = "Oh, no! A";
-		introduction += (Name == "orange" ? "n " : " "); 
-		introduction += Name + " pop has appeared!";
+		std::string introduction = "Oh, no! A" + Dialogue::starts_vowel(Name) + Name + " pop has appeared!";
 		Dialogue::print_line(introduction);
 	};
 

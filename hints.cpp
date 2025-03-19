@@ -1,11 +1,12 @@
 #include "hints.h"
+#include "stuff_handler.h"
 
 /// <summary>
-	/// Checks inventory and displays hint for first missing item from list
-	/// </summary>
+/// Checks inventory and displays hint for first missing item from list
+/// </summary>
 void Hints::display_hints()
 {
-	if (Collections::get_item("hints").Name != "")
+	if (!Stuff_Handler::verify_inventory("hints"))
 	{
 		Dialogue::print_line("Don't panic. Just stick to the plan.");
 		Dialogue::add_pause(800);
@@ -20,7 +21,7 @@ void Hints::display_hints()
 	else
 	{
 
-		const std::string itemOrder[11] = {"tool belt", "water bottle", "key", "knife", "ladder", "lantern", "batteries", "metal detector", "shovel", "dentures", "mouthguard"};
+		const std::string itemOrder[11] = { "tool belt", "water bottle", "key", "knife", "ladder", "lantern", "batteries", "metal detector", "shovel", "dentures", "mouthguard" };
 		int missing = 0;
 
 		for (std::string name : itemOrder)
@@ -53,7 +54,7 @@ void Hints::display_hints()
 			Dialogue::print_line("The GARAGE door is locked. As silly as it seemed at the time, it has it's own lock and special KEY. You never remember to put it on the hook when you're done with it.\nMaybe it fell out of your pockets when you were sitting around in the LIVING ROOM.");
 			break;
 		case 3: //knife in kitchen
-			if (Collections::get_room("Garage").Locked)
+			if (Room_Handler::Map.verify_locked("Garage"))
 			{
 				Dialogue::print_line("Don't forget to USE the KEY on the GARAGE door.");
 			}
@@ -63,7 +64,7 @@ void Hints::display_hints()
 			}
 			break;
 		case 4: //ladder in garage
-			if (Collections::get_room("Garage").Locked)
+			if (Room_Handler::Map.verify_locked("Garage"))
 			{
 				Dialogue::print_line("Don't forget to USE the KEY on the GARAGE door.");
 			}
@@ -87,7 +88,7 @@ void Hints::display_hints()
 			Dialogue::print_line("The lantern won't light itself... Well, not without BATTERIES at least.\nYou have that junk drawer in your OFFICE. Maybe there are BATTERIES in there.");
 			break;
 		case 7: //metal detector in basement
-			if (Collections::get_room("Basement").Locked)
+			if (Room_Handler::Map.verify_locked("Basement"))
 			{
 				Dialogue::print_line("Don't forget to USE the LANTERN in the BASEMENT.");
 			}
@@ -97,7 +98,7 @@ void Hints::display_hints()
 			}
 			break;
 		case 8: //shovel in garage
-			if (Collections::get_room("Backyard").Usable_items.find("shovel") != Collections::get_room("Backyard").Usable_items.end())
+			if ((*Room_Handler::Map.get_room("Backyard")).Useable_items.find("shovel") != ((*Room_Handler::Map.get_room("Backyard")).Useable_items.end()))
 			{
 				Dialogue::print_line("You've found something in the BACKYARD but you can't dig it up with your hands.\nYour SHOVEL is normally in the GARAGE but you had to move it to create space for a personal project. You think it's in the BASEMENT now.");
 			}
@@ -113,7 +114,7 @@ void Hints::display_hints()
 			Dialogue::print_line("You have all of the essentials but a little help wouldn't hurt. You can already feel all of the sugar dissolving your teeth. They could use some protection.\nDid you check the GUEST BEDROOM yet? You recently had company. Maybe they left something worthwhile behind.");
 			break;
 		default: //got all items except maybe mints
-			if (Collections::get_room("Hidden Room").Name != "")
+			if (!Room_Handler::Map.verify_locked("Hidden Room"))
 			{
 				Dialogue::print_line("The SWITCH must have changed something! Check the MAP to see if there's anything new that wasn't there before!");
 			}

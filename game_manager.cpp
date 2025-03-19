@@ -10,7 +10,6 @@ void Game_Manager::start_game() {
 	Dialogue::show_opening_monologue();
 	std::cin.get();
 	system("CLS");
-	Collections::reset_collections();
 	
 	if (User_Input::get_bool("Would you like a tutorial?: ")) {
 		Tutorial_Handler::teach();
