@@ -35,5 +35,5 @@ struct Characters_Handler {
 	/// Returns player object
 	/// </summary>
 	/// <returns></returns>
-	static Player get_player();
+	static Player& get_player();
 };

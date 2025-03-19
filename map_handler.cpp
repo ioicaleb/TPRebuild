@@ -45,7 +45,7 @@ std::string Map_Handler::defeat_boss(std::string room_name) {
 	if (room_name == "Attic") {
 		Knight_defeated = true;
 		message = "You see the small gilded CHEST your grandmother bequeathed you, just as you left it." + Stuff_Handler::verify_inventory("camping lantern") ? "" : "\nYour camping LANTERN rests on some boxes of halloween decorations.";
-		add_get_item("Attic", { "lantern" });
+		add_get_item("Attic", { "camping lantern" });
 		add_interactable("Attic", { "chest" });
 		Attic.Description += " " + message;
 	}
@@ -60,7 +60,7 @@ std::string Map_Handler::defeat_boss(std::string room_name) {
 		}
 		Basement.Description = Basement.Description.substr(0, Basement.Description.find("\n")) + "\n" + message;
 		add_interactable("Basement", { "furnace", "water main" });
-		add_get_item("Basement", { "metal detector", "shovel"});
+		add_get_item("Basement", { "metal detector", "shovel" });
 	}
 	else if (room_name == "Garage") {
 		Bishop_defeated = true;
@@ -77,13 +77,12 @@ std::string Map_Handler::defeat_boss(std::string room_name) {
 	}
 
 	return message;
-};		
+};
 
 std::string Map_Handler::unlock(std::string room_name) {
 	std::string message = "";
 	if (room_name == "Attic") {
 		Locked_Attic = false;
-		Dialogue::print_line("You attach the ladder to the attic. The rungs creak beneath your feet as you climb.");
 		message = "The light pours in through large windows on the far side of the attic. The shine gleams off of your HOME GYM equipment that you put here after converting the guest bedroom.";
 		Attic.Description = message;
 		add_interactable("Attic", { "home gym" });
@@ -139,3 +138,32 @@ void Map_Handler::remove_interactable(const std::string& room_name, std::set<std
 		room->Interactables.erase(item);
 	}
 };
+
+bool Map_Handler::verify_room_item(const std::string& item_name, const std::string& command) {
+	Room* roomptr = get_room(Room_Handler::get_current_location());
+	Room room = (*roomptr);
+	if (command == "get")
+	{
+		for (std::string item : room.Get_items) {
+			if (item == item_name) {
+				return true;
+			}
+		}
+	}
+	else if (command == "use") {
+		for (std::string item : room.Useable_items) {
+			if (item == item_name) {
+				return true;
+			}
+		}
+	}
+	else if (command == "interact") {
+		for (std::string item : room.Interactables) {
+			if (item == item_name) {
+				return true;
+			}
+		}
+	}
+
+	return false;
+}

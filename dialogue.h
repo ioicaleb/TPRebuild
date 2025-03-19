@@ -42,10 +42,12 @@ struct Dialogue {
 	/// <returns>Lowercase text</returns>
 	static std::string lowercase(const std::string& string);
 
+	static std::string capitalize(const std::string& string);
+
 	/// <summary>
 	/// Checks if string begins with a vowel
 	/// </summary>
 	/// <param name="string">Text to check</param>
 	/// <returns>n if true or a space if false</returns>
-	static std::string starts_vowel(const std::string& string);
+	static std::string set_article(const std::string& string);
 };

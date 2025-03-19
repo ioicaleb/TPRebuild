@@ -4,7 +4,7 @@
 Enemy* lolipop = new Enemy(false);
 Player player = Player();
 
-Player Characters_Handler::get_player() {
+Player& Characters_Handler::get_player() {
 	return player;
 };
 
@@ -35,7 +35,7 @@ bool Characters_Handler::attack_enemy(bool& combat) {
 		player.increment_licks();
 		player.increment_sugar();
 		int damage = player.roll_damage();
-		Dialogue::print_line("You managed to get " + std::to_string(damage) + " licks!");
+		Dialogue::print_line("You managed to get " + std::to_string(damage) + " lick" + (damage > 1 ? "s!" : "!"));
 		lolipop->Health -= damage;
 		if (lolipop->Health < 1) {
 			if (lolipop->Name == "Bishop") {

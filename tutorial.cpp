@@ -30,7 +30,7 @@ static void handle_action(const Input_Action& action)
 			}
 		}
 		else {
-			Dialogue::print_line("You can't take a" + Dialogue::starts_vowel(action.target) + action.target + " with you.");
+			Dialogue::print_line("You can't take " + Dialogue::set_article(action.target) + action.target + " with you.");
 		}
 	}
 	else if (action.command == "search") {
@@ -89,11 +89,11 @@ void Tutorial_Handler::teach() {
 		}
 	}
 	stepComplete = false;
-	Dialogue::print_line("The TOOL BELT is one of the most useful items you will find. USE will help you find items you can grab, but you have to use GET to actually take the item. Just type GET and then the item name, i.e. GET TOOL BELT.");
+	Dialogue::print_line("The toolbelt is one of the most useful items you will find. USE will help you find items you can grab, but you have to use GET to actually take the item. Just type GET and then the item name, i.e. GET toolbelt.");
 	while (!stepComplete)
 	{
 		Input_Action practiceIA(User_Input::get_action("Go ahead try it: "));
-		if (practiceIA.command == "get" && practiceIA.target == "tool belt")
+		if (practiceIA.command == "get" && practiceIA.target == "toolbelt")
 		{
 			handle_action(practiceIA);
 			stepComplete = true;
@@ -103,8 +103,8 @@ void Tutorial_Handler::teach() {
 			Dialogue::print_line("Not quite. Try again.");
 		}
 	}
-	Dialogue::print_line("Now that you have your TOOL BELT, you can use it at any time. While each item has its own special use, your TOOL BELT can be USEd to look at what items you have collected. The command is the same as the GET command but with USE instead of GET.");
-	Dialogue::print_line("I won't make you do this one but keep it in mind. Sometimes, you will need to USE an item from your TOOL BELT to advance.\nKeep an eye on your sugar level and go get those lolipops! If one jumps out in front of you, you can fight it by licking it, but your sugar level will increase each time you attack. Alternatively, you can run by using MOVE and going somewhere else.\nThat's all!\n\nGOOD LUCK!");
+	Dialogue::print_line("Now that you have your toolbelt, you can use it at any time. While each item has its own special use, your toolbelt can be USEd to look at what items you have collected. The command is the same as the GET command but with USE instead of GET.");
+	Dialogue::print_line("I won't make you do this one but keep it in mind. Sometimes, you will need to USE an item from your toolbelt to advance.\nKeep an eye on your sugar level and go get those lolipops! If one jumps out in front of you, you can fight it by licking it, but your sugar level will increase each time you attack. Alternatively, you can run by using MOVE and going somewhere else.\nThat's all!\n\nGOOD LUCK!");
 	Dialogue::print("Press any key to start the game!");
 	Dialogue::add_pause(200);
 	std::cin.get();

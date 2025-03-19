@@ -12,7 +12,7 @@ public:
 		srand(time(NULL));
 		Name = Flavors[rand() % 5];
 		Health = 10;
-		std::string introduction = "Oh, no! A" + Dialogue::starts_vowel(Name) + Name + " pop has appeared!";
+		std::string introduction = "Oh, no! " + Dialogue::capitalize(Dialogue::set_article(Name)) + Name + " pop has appeared!";
 		Dialogue::print_line(introduction);
 	};
 
@@ -25,11 +25,11 @@ public:
 		}
 		else if (name == "Knight") {
 			Health = 40;
-			introduction = "Oh, no! It's the Bishop!";
+			introduction = "Oh, no! It's the Knight!";
 		}
 		else if (name == "Rook") {
 			Health = 60;
-			introduction = "Oh, no! It's the Bishop!";
+			introduction = "Oh, no! It's the Rook!";
 		}
 		else if (name == "King") {
 			Health = 180;

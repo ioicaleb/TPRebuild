@@ -9,27 +9,27 @@ static Item create_item(std::string name, std::string description)
 	return item;
 }
 
-Item Batteries = create_item(std::string("batteries"), "Four C batteries that should have enough juice to power the lantern for as long as you need.");
-Item Lantern = create_item(std::string("camping lantern"), "\"For Use In Emergencies\" feels very appropriate right now. The lantern requires 4 'C' batteries, which are not included currently.");
-Item Dentures = create_item(std::string("dentures"), "A set of false teeth that look weak but may be able to give you a little more bite. You can bite more aggressively with these on.");
-Item Hints = create_item(std::string("hint list"), "A list of steps of your master plan. Can be checked by typing \"Hint\" at any time.");
-Item Key = create_item(std::string("key"), "A silver key with a green rubber cap to identify it as the garage key. The rubber is worn down where you have picked at it. Why you have a special lock and key for a single room is beyond you, but you weren't the one who designed and built this house.");
-Item Knife = create_item(std::string("knife"), "The various tools on the utility knife have been worn down. The screwdriver is bent. The corkscrew is fine, but you don't drink wine. The magnifying glass is stuck. The only thing that seems useful is the small knife.\nIt's a little dull from your whittling practice, but your duck carvings are getting much better.");
-Item Ladder = create_item(std::string("ladder"), "The lolipop sticks surprisingly support your weight without any sign of breaking. You even fashioned convenient places to put your hands.");
-Item Metal_detector = create_item(std::string("metal detector"), "A relatively small, relatively weak metal detector that should be plenty to find what you might need.");
-Item Mints = create_item(std::string("mints"), "A handful of spearmint candies. The smell is powerful enough that you can smell them from your hand. You did dig these out from your couch cushions so they are covered in lint and some unidentifiable crumbs.");
-Item Mouthguard = create_item("mouthguard", "A plastic mouth guard that you found again just recently. You constantly feel it against the roof of your mouth, but it will protect your teeth from the sugar.");
-Item Shovel = create_item(std::string("shovel"), "A metal shovel with a wooden shaft and a comfortable plastic grip. You haven't used it much since you planted your garden.");
-Item Tool_belt = create_item("tool belt", "A modified utilty belt prepared to hold any items you find that seem useful, no matter how impratically sized.");
+Item Batteries = create_item("batteries", "Four C batteries that should have enough juice to power the lantern for as long as you need.");
+Item Lantern = create_item("camping lantern", "\"For Use In Emergencies\" feels very appropriate right now. The lantern requires 4 'C' batteries, which are not included currently.");
+Item Dentures = create_item("dentures", "A set of false teeth that look weak but may be able to give you a little more bite. You can bite more aggressively with these on.");
+Item Hints = create_item("hint list", "A list of steps of your master plan. Can be checked by typing \"Hint\" at any time.");
+Item Key = create_item("key", "A silver key with a green rubber cap to identify it as the garage key. The rubber is worn down where you have picked at it. Why you have a special lock and key for a single room is beyond you, but you weren't the one who designed and built this house.");
+Item Knife = create_item("knife", "The various tools on the utility knife have been worn down. The screwdriver is bent. The corkscrew is fine, but you don't drink wine. The magnifying glass is stuck. The only thing that seems useful is the small knife.\nIt's a little dull from your whittling practice, but your duck carvings are getting much better.");
+Item Ladder = create_item("ladder", "The lolipop sticks surprisingly support your weight without any sign of breaking. You even fashioned convenient places to put your hands.");
+Item Metal_detector = create_item("metal detector", "A relatively small, relatively weak metal detector that should be plenty to find what you might need.");
+Item Mints = create_item("mints", "A handful of spearmint candies. The smell is powerful enough that you can smell them from your hand. You did dig these out from your couch cushions so they are covered in lint and some unidentifiable crumbs.");
+Item Mouthguard = create_item("mouthguard", "A plastic mouthguard that you found again just recently. You constantly feel it against the roof of your mouth, but it will protect your teeth from the sugar.");
+Item Shovel = create_item("shovel", "A metal shovel with a wooden shaft and a comfortable plastic grip. You haven't used it much since you planted your garden.");
+Item Toolbelt = create_item("toolbelt", "A modified utilty belt prepared to hold any items you find that seem useful, no matter how impratically sized.");
 Item Water_bottle = create_item("water bottle", "A tall, large, green water bottle you stored for an emergency like this.");
 
-std::vector<Item> Stuff_Handler::All_items = { Batteries, Lantern, Dentures, Hints, Key, Knife, Ladder, Metal_detector, Mints, Mouthguard, Shovel, Tool_belt, Water_bottle };
+std::vector<Item> Stuff_Handler::All_items = { Batteries, Lantern, Dentures, Hints, Key, Knife, Ladder, Metal_detector, Mints, Mouthguard, Shovel, Toolbelt, Water_bottle };
 
 std::vector<Item*> Stuff_Handler::Inventory = {};
 
 Item* Stuff_Handler::get_itemptr(const std::string& item_name)
 {
-	for (Item item : All_items) {
+	for (Item& item : All_items) {
 		if (item.Name == item_name) {
 			return &item;
 		}
@@ -45,7 +45,7 @@ void Stuff_Handler::handle_use_item(const std::string& item_name)
 	}
 	else {
 		if (item_name == "batteries") {
-			if (Stuff_Handler::verify_inventory("camping lantern"))
+			if (!Stuff_Handler::verify_inventory("camping lantern"))
 			{
 				message = "You roll the batteries in your hand. These could come in handy if you find something that could use them.";
 			}
@@ -116,8 +116,8 @@ void Stuff_Handler::handle_use_item(const std::string& item_name)
 			}
 		}
 		else if (item_name == "ladder") {
-			if (Room_Handler::Map.get_room("Attic")) {
-				message = "You hook the ends of the ladder into the slots on the attic hatch. After a quick integrity check, you confidently climb into the attic.";
+			if (Room_Handler::Map.verify_locked("Attic")) {
+				message = "You hook the ends of the ladder into the slots on the attic hatch. After a quick integrity check, you confidently climb into the attic. The rungs creak beneath your feet as you climb.";
 				Room_Handler::Map.remove_use_item("Attic", { "ladder" });
 				Stuff_Handler::remove_item("ladder");
 				message += "\n" + Room_Handler::Map.unlock("Attic");
@@ -185,7 +185,7 @@ void Stuff_Handler::handle_use_item(const std::string& item_name)
 				message = "You think that you could get a good swing out of this, if necessary. You're not sure how the handle will withstand an attack.";
 			}
 		}
-		else if (item_name == "tool belt") {
+		else if (item_name == "toolbelt") {
 			Dialogue::print_line("You look at your belt to see what all you've collected.");
 			Stuff_Handler::get_all_inventory();
 		}
@@ -234,26 +234,29 @@ void Stuff_Handler::handle_use_item(const std::string& item_name)
 void Stuff_Handler::handle_get_item(std::string name) {
 	if (name == "mouthguard") {
 		Characters_Handler::get_player().increase_critical_multiplier();
-		Dialogue::print_line("You open the case and remove the mouth guard. It looks clean enough, and, without any water to rinse it, you don't have any other options. You pop it into your mouth and smile aggresively, excited to take on more lolipops.");
+		Dialogue::print_line("You open the case and remove the mouthguard. It looks clean enough, and, without any water to rinse it, you don't have any other options. You pop it into your mouth and smile aggresively, excited to take on more lolipops.");
 	}
 	else if (name == "dentures") {
 		Characters_Handler::get_player().lower_critical_threshold();
 		Dialogue::print_line("You grab the false teeth. Are they dentures? What's the difference?");
 		if (Stuff_Handler::verify_inventory("mouthguard"))
 		{
-			Dialogue::print_line("You pop out your mouth guard while considering that maybe there isn't a difference. Maybe it has to do with what they're made of?\n");
+			Dialogue::print_line("You pop out your mouthguard while considering that maybe there isn't a difference. Maybe it has to do with what they're made of?\n");
 		}
 		Dialogue::print_line("You're so distracted that you put them over your teeth without thinking about the fact that you don't own any false teeth. Too late now.");
 	}
 	else if (name == "ladder") {
-		Dialogue::print_line("You assemble the ladder and lift it proudly. Strangely, there is a spot on your tool belt to secure the ladder. Convenient.");
+		Dialogue::print_line("You assemble the ladder and lift it proudly. Strangely, there is a spot on your toolbelt to secure the ladder. Convenient.");
 		Characters_Handler::get_player().remove_exp();
 	}
-	else if (name == "tool belt") {
-		Dialogue::print_line("You strap your tool belt around your waist and adjust the size to acccount for your recent weight loss.");
+	else if (name == "toolbelt") {
+		Dialogue::print_line("You strap your toolbelt around your waist and adjust the size to account for your recent weight loss.");
 		Dialogue::add_pause(200);
 		Dialogue::print_line("You look great.");
 		Dialogue::add_pause(100);
 		Dialogue::print_line("You feel great.");
+	}
+	else {
+		Dialogue::print_line("You strap the " + name + " to your toolbelt.");
 	}
 };

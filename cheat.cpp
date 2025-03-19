@@ -16,7 +16,7 @@ static void GrindXP()
 void Cheat::play_game_for_me() {
 	Input_Handler::create_send_action("use light switch");
 	Input_Handler::create_send_action("use light switch");
-	Input_Handler::create_send_action("get tool belt");
+	Input_Handler::create_send_action("get toolbelt");
 	Input_Handler::create_send_action("move kitchen");
 	Input_Handler::create_send_action("get knife");
 	Input_Handler::create_send_action("get water bottle");
@@ -28,7 +28,7 @@ void Cheat::play_game_for_me() {
 	Input_Handler::create_send_action("get key");
 	Input_Handler::create_send_action("scatter");
 	Input_Handler::create_send_action("move guest bedroom");
-	Input_Handler::create_send_action("get guard");
+	Input_Handler::create_send_action("get mouthguard");
 	Input_Handler::create_send_action("scatter");
 	Input_Handler::create_send_action("move bathroom");
 	Input_Handler::create_send_action("get dentures");
@@ -55,10 +55,10 @@ void Cheat::play_game_for_me() {
 	{
 		Input_Handler::create_send_action("lick");
 	}
-	Input_Handler::create_send_action("get lantern");
+	Input_Handler::create_send_action("get camping lantern");
 	Input_Handler::create_send_action("use batteries");
 	Input_Handler::create_send_action("move basement");
-	Input_Handler::create_send_action("use lantern");
+	Input_Handler::create_send_action("use camping lantern");
 	Input_Handler::create_send_action("use milk crates");
 	while (!Room_Handler::Map.verify_boss("Basement") && (Characters_Handler::get_player().get_sugar_level() < 100))
 	{

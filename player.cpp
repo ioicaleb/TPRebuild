@@ -19,7 +19,7 @@ struct Player {
 	void increment_licks() { ++Licks; };
 
 	void lower_critical_threshold() { Critical_threshold = 85; };
-	void increase_critical_multiplier() { Critical_multiplier = 3; };
+	void increase_critical_multiplier() { Critical_multiplier = 2; };
 
 	int set_sugar(int change) {
 		if (Sugar_level >= change) {

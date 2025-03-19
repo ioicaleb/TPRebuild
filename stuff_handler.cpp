@@ -28,11 +28,11 @@ bool Stuff_Handler::verify_inventory(const std::string& item_name) {
 };
 
 void Stuff_Handler::handle_use_switch(const std::string& item_name) {
-	if (verify_item(item_name))
+	if (verify_item(item_name) && Room_Handler::Map.verify_room_item(item_name, "use"))
 	{
 		handle_use_item(item_name);
 	}
-	else if (verify_interact(item_name)) {
+	else if (verify_interact(item_name) && Room_Handler::Map.verify_room_item(item_name, "interact")) {
 		handle_use_interact(item_name);
 	}
 	else
@@ -42,10 +42,16 @@ void Stuff_Handler::handle_use_switch(const std::string& item_name) {
 };
 
 void Stuff_Handler::get_all_inventory() {
-	for (Item* itemptr : Inventory) {
-		Item item = *itemptr;
-		if (item.Name != "tool belt") {
-			Dialogue::print_line(item.Name);
+	if (Inventory.size() > 1) {
+		for (Item* itemptr : Inventory) {
+			Item item = *itemptr;
+			if (item.Name != "toolbelt") {
+				Dialogue::print_line(item.Name);
+			}
 		}
+	}
+	else 
+	{
+		Dialogue::print_line("You find nothing but empty pockets and unlatched straps.");
 	}
 }

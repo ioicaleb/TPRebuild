@@ -33,7 +33,7 @@ Interactable Couch = create_item(std::string("couch"), "A comfortable couch that
 Interactable Bench = create_item(std::string("craft bench"), "A sturdy workbench that has almost enough tools to make whatever you need,\nmeaning that whatever you need, you always have almost enough tools to make it.", "You scan the bench for ideas of what to make.");
 Interactable Desk = create_item(std::string("desk"), "A white wooden desk where you do all of your vaguely defined work.", "You can't find anything else of use and would rather not get back to work on your project just yet.");
 Interactable Dresser = create_item(std::string("dresser"), "A long mahogany dresser with a mirror on top. You check each drawer but only find neatly folded clothes.\nYou've been on top of your laundry lately, a refreshing change of pace. There's nothing of real use here.", "You straighten some pairs of underwear and feel a little better with the increased sense of order in the world.");
-Interactable Endgame_button = create_item(std::string("button"), "A mysterious button that seems to be the only thing in the room. It's glowing softly. A sign above says \"Win Game.\"", "When it fades, you see that you are back in your yard. The dirt piles are gone. Your tool belt is gone. All of the stuff you collected is gone.");
+Interactable Endgame_button = create_item(std::string("button"), "A mysterious button that seems to be the only thing in the room. It's glowing softly. A sign above says \"Win Game.\"", "When it fades, you see that you are back in your yard. The dirt piles are gone. Your toolbelt is gone. All of the stuff you collected is gone.");
 Interactable Fridge = create_item(std::string("fridge"), "A large metallic fridge/freezer combo. The power to the fridge seems to be off. You should investigate this later, but it would be better to leave it alone until the power returns.", "Until you can figure out why the fridge has no power, it's better to leave it shut.");
 Interactable Furnace = create_item(std::string("furnace"), "A decently new furnace. You've never had any problems with it.", "You touch the furnace haphazardly. It's cool to the touch. The weather has been warm and sunny recently, so there's been no need to run the furnace.");
 Interactable Guest_bed = create_item(std::string("guest bed"), "A modest full-sized bed. The sheets and cover are a light gray and recently changed after your family recently visited.", "");
@@ -117,7 +117,7 @@ void Stuff_Handler::handle_use_interact(const std::string& item_name)
 
 	}
 	else if (item.Name == "closet") {
-		message += Stuff_Handler::verify_inventory("tool belt") ? "" : " One of the hangers holds all of your belts, including your TOOL BELT.";
+		message += Stuff_Handler::verify_inventory("toolbelt") ? "" : " One of the hangers holds all of your belts, including your toolbelt.";
 	}
 	else if (item.Name == "computer") {
 		if (!Stuff_Handler::verify_inventory("hints"))
@@ -191,7 +191,7 @@ void Stuff_Handler::handle_use_interact(const std::string& item_name)
 			SetConsoleTextAttribute(hConsole, 107 | 30);
 		}
 		system("CLS");
-		Dialogue::print_line("When it fades, you see that you are back in your yard. The dirt piles are gone. Your tool belt is gone. All of the stuff you collected is gone.");
+		Dialogue::print_line("When it fades, you see that you are back in your yard. The dirt piles are gone. Your toolbelt is gone. All of the stuff you collected is gone.");
 		Dialogue::add_pause(500);
 		Dialogue::print_line("It's over. Great job!", 40);
 		Game_Manager::win_game();
@@ -225,7 +225,7 @@ void Stuff_Handler::handle_use_interact(const std::string& item_name)
 
 	}
 	else if (item.Name == "night stand") {
-		message =Stuff_Handler::verify_inventory("guard") ? "You open each drawer but find nothing that could be of any assistance." : "You open the draw to discover a familiar case. It's your mouth GUARD that you left behind when this nightstand used to be in your room. It should still fit your mouth.";
+		message =Stuff_Handler::verify_inventory("guard") ? "You open each drawer but find nothing that could be of any assistance." : "You open the draw to discover a familiar case. It's your mouthguard that you left behind when this nightstand used to be in your room. It should still fit your mouth.";
 
 	}
 	else if (item.Name == "sander") {

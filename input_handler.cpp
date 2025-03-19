@@ -11,7 +11,7 @@ std::map<std::string, std::string> Valid_inputs {
 	{"Search", "You may have missed something you can interact with. Take another look around."},
 	{"Check", "(Item) You remember that thing you picked up earlier? It might be useful. Check it out just to be sure."},
 	{"Use", "(Item) Those items in your pack aren't just there to look pretty. Put them to good use"},
-	{"Get", "(Item) Your supplies have been scattered. You must recover them. If you come across one, use this to add it to your tool belt."},
+	{"Get", "(Item) Your supplies have been scattered. You must recover them. If you come across one, use this to add it to your toolbelt."},
 	{"Hint", "In the stress and surprise, you may have forgotten your master plan. That's fine. You can scan your mind for bits of the plan."},
 	{"Help", "It helps to take time to reflect on your options. Help yourself out by stopping for a breather."},
 #ifdef _DEBUG
@@ -99,16 +99,22 @@ void Input_Handler::handle_action(Input_Action& action)
 	}
 	else if (action.command == "get") {
 		action = action.target == "" ? User_Input::get_target(action, "Which item would you like to get?") : action;
-		if (Stuff_Handler::verify_item(action.target)) {
+		if (!Stuff_Handler::verify_item(action.target)) {
+			Dialogue::print_line("There's no " + action.target + " to take.");
+		}
+		else if (Stuff_Handler::verify_inventory(action.target)) {
+			Dialogue::print_line("You already have one. USE your TOOLBELT to check what you have.");
+		}
+		if (Room_Handler::Map.verify_room_item(action.target, "get")) {
 			if (Stuff_Handler::add_item(action.target)) {
 				Stuff_Handler::handle_get_item(action.target);
 			}
 			else {
-				Dialogue::print_line("You can't fit " + action.target + " anywhere on your TOOLBELT.");
+				Dialogue::print_line("You can't fit " + Dialogue::set_article(action.target) + action.target + " anywhere on your TOOLBELT.");
 			}
 		}
 		else {
-			Dialogue::print_line("You can't take a" + Dialogue::starts_vowel(action.target) + action.target + " with you.");
+			Dialogue::print_line("You can't take " + Dialogue::set_article(action.target) + action.target + " with you.");
 		}
 	}
 	else if (action.command == "help") {

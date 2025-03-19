@@ -44,11 +44,30 @@ std::string Dialogue::lowercase(const std::string& input) {
 	return output;
 }
 
-std::string Dialogue::starts_vowel(const std::string& string) {
-	if (string.starts_with("a") || string.starts_with("e") || string.starts_with("i") || string.starts_with("o") || string.starts_with("u")) {
-		return "n ";
+std::string Dialogue::capitalize(const std::string& input) {
+	std::string output = "";
+	for (int i = 0; i < input.length(); i++) {
+		if (i == 0)
+		{
+			output += std::toupper(input[i]);
+		}
+		else
+		{
+			output += input[i];
+		}
+	}
+	return output;
+}
+
+std::string Dialogue::set_article(const std::string& string) {
+	if (string.ends_with("s"))
+	{
+		return "any ";
+	}
+	else if (string.starts_with("a") || string.starts_with("e") || string.starts_with("i") || string.starts_with("o") || string.starts_with("u")) {
+		return "an ";
 	}
 	else {
-		return " ";
+		return "a ";
 	}
 }

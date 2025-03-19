@@ -21,7 +21,7 @@ void Hints::display_hints()
 	else
 	{
 
-		const std::string itemOrder[11] = { "tool belt", "water bottle", "key", "knife", "ladder", "lantern", "batteries", "metal detector", "shovel", "dentures", "mouthguard" };
+		const std::string itemOrder[11] = { "toolbelt", "water bottle", "key", "knife", "ladder", "lantern", "batteries", "metal detector", "shovel", "dentures", "mouthguard" };
 		int missing = 0;
 
 		for (std::string name : itemOrder)
@@ -42,10 +42,10 @@ void Hints::display_hints()
 		}
 		switch (missing)
 		{
-		case 0: //tool belt in MB
-			Dialogue::print_line("You haven't grabbed your tool belt yet? That's part of the tutorial.");
+		case 0: //toolbelt in MB
+			Dialogue::print_line("You haven't grabbed your toolbelt yet? That's part of the tutorial.");
 			Dialogue::add_pause(300);
-			Dialogue::print_line("Go back to the MASTER BEDROOM and USE the CLOSET to GET the TOOL BELT.");
+			Dialogue::print_line("Go back to the MASTER BEDROOM and USE the CLOSET to GET the toolbelt.");
 			break;
 		case 1: //water bottle in kitchen
 			Dialogue::print_line("You need something to help you stave off the sugar shakes.\nThere's some water in a few places, but it would be a lot better if you had something with which to drink.\nMaybe in the KITCHEN.");
