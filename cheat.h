@@ -1,8 +1,9 @@
 #pragma once
-#include "collections.h"
-#include "room_handler.h"
 #include "input_handler.h"
 
 struct Cheat {
+	/// <summary>
+	/// Debug command that plays and tests game
+	/// </summary>
 	static void play_game_for_me();
 };

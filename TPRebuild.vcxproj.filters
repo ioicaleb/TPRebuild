@@ -36,9 +36,6 @@
     <ClCompile Include="input_action.cpp">
       <Filter>Source Files\Models</Filter>
     </ClCompile>
-    <ClCompile Include="interactables.cpp">
-      <Filter>Source Files\Models</Filter>
-    </ClCompile>
     <ClCompile Include="player.cpp">
       <Filter>Source Files\Models</Filter>
     </ClCompile>
@@ -53,9 +50,6 @@
     </ClCompile>
     <ClCompile Include="tutorial.cpp">
       <Filter>Source Files\Handlers</Filter>
-    </ClCompile>
-    <ClCompile Include="collections.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="room_handler.cpp">
       <Filter>Source Files\Handlers</Filter>
@@ -75,18 +69,21 @@
     <ClCompile Include="dialogue_handler.cpp">
       <Filter>Source Files\Handlers</Filter>
     </ClCompile>
-    <ClCompile Include="items.cpp">
-      <Filter>Source Files\Models</Filter>
-    </ClCompile>
     <ClCompile Include="item_handler.cpp">
+      <Filter>Source Files\Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="map_handler.cpp">
+      <Filter>Source Files\Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="interactable_handler.cpp">
+      <Filter>Source Files\Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="stuff_handler.cpp">
       <Filter>Source Files\Handlers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="user_input.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="collections.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="input_handler.h">
@@ -104,12 +101,6 @@
     <ClInclude Include="characters_handler.h">
       <Filter>Header Files\Handlers</Filter>
     </ClInclude>
-    <ClInclude Include="room.h">
-      <Filter>Header Files\Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="interactables.h">
-      <Filter>Header Files\Classes</Filter>
-    </ClInclude>
     <ClInclude Include="input_action.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
@@ -122,7 +113,13 @@
     <ClInclude Include="cheat.h">
       <Filter>Header Files\Handlers</Filter>
     </ClInclude>
-    <ClInclude Include="item_handler.h">
+    <ClInclude Include="stuff_handler.h">
+      <Filter>Header Files\Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="map_handler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="interactable.h">
       <Filter>Header Files\Handlers</Filter>
     </ClInclude>
   </ItemGroup>

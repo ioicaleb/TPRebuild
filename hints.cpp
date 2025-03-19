@@ -25,7 +25,7 @@ void Hints::display_hints()
 
 		for (std::string name : itemOrder)
 		{
-			if (!Collections::verify_inventory(name)) {
+			if (!Stuff_Handler::verify_inventory(name)) {
 				break;
 			}
 			++missing;
@@ -77,7 +77,7 @@ void Hints::display_hints()
 			}
 			break;
 		case 5: //lantern in attic
-			if (Collections::get_room("Attic").Locked)
+			if (Room_Handler::Map.get_room("Attic"))
 			{
 				Dialogue::print_line("Don't forget to USE the LADDER to climb to the ATTIC.");
 			}

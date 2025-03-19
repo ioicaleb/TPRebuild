@@ -14,7 +14,7 @@ static void handle_action(const Input_Action& action)
 		Item item = Collections::get_item(action.target);
 		if (item.Name == "")
 		{
-			Interactables interact = Collections::get_interactable(action.target);
+			Interactable interact = Collections::get_interactable(action.target);
 			if (interact.Name != "") {
 				Item_Handler::handle_use_item(interact);
 			}

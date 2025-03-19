@@ -1,8 +1,8 @@
 #include "characters_handler.h"
+#include "enemy.cpp"
 
 Enemy* lolipop = new Enemy(false);
 Player player = Player();
-
 
 Player Characters_Handler::get_player() {
 	return player;
@@ -38,8 +38,17 @@ bool Characters_Handler::attack_enemy(bool& combat) {
 		Dialogue::print_line("You managed to get " + std::to_string(damage) + " licks!");
 		lolipop->Health -= damage;
 		if (lolipop->Health < 1) {
-			if (lolipop->Name == "Bishop" || lolipop->Name == "Knight" || lolipop->Name == "Rook" || lolipop->Name == "King") {
-				Room_Handler::defeat_boss();
+			if (lolipop->Name == "Bishop") {
+				Room_Handler::Map.defeat_boss("Garage");
+			}
+			else if (lolipop->Name == "Knight") {
+				Room_Handler::Map.defeat_boss("Attic");
+			}
+			else if (lolipop->Name == "Rook") {
+				Room_Handler::Map.defeat_boss("Basement");
+			}
+			else if (lolipop->Name == "King") {
+				Room_Handler::Map.defeat_boss("Hidden Room");
 			}
 
 			player.eat_candy();

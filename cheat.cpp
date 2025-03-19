@@ -42,9 +42,8 @@ void Cheat::play_game_for_me() {
 	Input_Handler::create_send_action("move garage");
 	Input_Handler::create_send_action("use key");
 	Input_Handler::create_send_action("use sander");
-	while (!(Collections::get_room(Room_Handler::get_current_location()).Boss_defeated) && (Characters_Handler::get_player().get_sugar_level() < 100))
+	while (!Room_Handler::Map.verify_boss("Garage") && (Characters_Handler::get_player().get_sugar_level() < 100))
 	{
-		bool boss_defeated = Collections::get_room(Room_Handler::get_current_location()).Boss_defeated;
 		Input_Handler::create_send_action("lick");
 	}
 	Input_Handler::create_send_action("use knife");
@@ -52,7 +51,7 @@ void Cheat::play_game_for_me() {
 	Input_Handler::create_send_action("move attic");
 	Input_Handler::create_send_action("use ladder");
 	Input_Handler::create_send_action("use home gym");
-	while (!(Collections::get_room(Room_Handler::get_current_location()).Boss_defeated) && (Characters_Handler::get_player().get_sugar_level() < 100))
+	while (!Room_Handler::Map.verify_boss("Attic") && (Characters_Handler::get_player().get_sugar_level() < 100))
 	{
 		Input_Handler::create_send_action("lick");
 	}
@@ -61,7 +60,7 @@ void Cheat::play_game_for_me() {
 	Input_Handler::create_send_action("move basement");
 	Input_Handler::create_send_action("use lantern");
 	Input_Handler::create_send_action("use milk crates");
-	while (!(Collections::get_room(Room_Handler::get_current_location()).Boss_defeated) && (Characters_Handler::get_player().get_sugar_level() < 100))
+	while (!Room_Handler::Map.verify_boss("Basement") && (Characters_Handler::get_player().get_sugar_level() < 100))
 	{
 		Input_Handler::create_send_action("lick");
 	}
@@ -82,7 +81,7 @@ void Cheat::play_game_for_me() {
 	Input_Handler::create_send_action("use knife");
 	Input_Handler::create_send_action("use shovel");
 	Input_Handler::create_send_action("use water bottle");
-	while (!(Collections::get_room(Room_Handler::get_current_location()).Boss_defeated) && Characters_Handler::get_player().get_sugar_level() < 100)
+	while (!Room_Handler::Map.verify_boss("Hidden Room") && Characters_Handler::get_player().get_sugar_level() < 100)
 	{
 		Input_Handler::create_send_action("lick");
 	}

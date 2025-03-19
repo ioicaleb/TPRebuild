@@ -1,21 +1,68 @@
 #pragma once
 #include "dialogue.h"
-#include "collections.h"
 #include "characters_handler.h"
 #include "user_input.h"
-#include "room.h"
+#include "map_handler.h"
+#include <string>
+#include <set>
+
+class Room
+{
+private:
+	double Encounter_chance;
+
+public:
+	Room() { Name = ""; };
+	Room(std::string name, std::string description, double encounter_chance, std::set<std::string> get_items, std::set<std::string> interactable_items, std::set<std::string> usable_items);
+	
+	/// <summary>
+	/// Multiply room encounter chance by random number to determine if enemy spawns
+	/// </summary>
+	/// <returns>Whether or not to spawn enemy</returns>
+	bool roll_encounter();
+
+	std::string Name;
+	std::string Description;
+
+	std::set<std::string> Get_items{};
+
+	std::set<std::string> Useable_items {
+		"tool belt",
+		"water bottle",
+		"mouthguard",
+		"dentures",
+		"mints",
+		"batteries" };
+
+	std::set<std::string> Interactables{ "light switch" };
+};
 
 struct Room_Handler
 {
+	static Map_Handler Map;
+
+	/// <summary>
+	/// Returns name of current room
+	/// </summary>
+	/// <returns></returns>
 	static std::string get_current_location();
 
-	static bool change_room(Room target, bool& combat);
+	/// <summary>
+	/// Changes current location and rolls for encounter
+	/// </summary>
+	/// <param name="target"></param>
+	/// <param name="combat"></param>
+	/// <returns>Whether to spawn enemy</returns>
+	static bool change_room(const std::string& target, bool& combat);
 
+	/// <summary>
+	/// Returns list of room names with current room marked
+	/// </summary>
 	static void view_rooms();
 
+	/// <summary>
+	/// Returns list of interactable items in room
+	/// </summary>
+	/// <param name="combat">Only needed in Pantry to determine if enemy already exists</param>
 	static void search_room(bool& combat);
-
-	static void defeat_boss();
-
-	static std::string unlock();
 };

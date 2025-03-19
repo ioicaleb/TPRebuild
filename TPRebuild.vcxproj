@@ -131,35 +131,34 @@
   <ItemGroup>
     <ClCompile Include="characters_handler.cpp" />
     <ClCompile Include="cheat.cpp" />
-    <ClCompile Include="collections.cpp" />
     <ClCompile Include="dialogue_handler.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="game_manager.cpp" />
     <ClCompile Include="hints.cpp" />
     <ClCompile Include="input_action.cpp" />
     <ClCompile Include="input_handler.cpp" />
-    <ClCompile Include="interactables.cpp" />
-    <ClCompile Include="items.cpp" />
+    <ClCompile Include="interactable_handler.cpp" />
     <ClCompile Include="item_handler.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="map_handler.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="room.cpp" />
     <ClCompile Include="room_handler.cpp" />
+    <ClCompile Include="stuff_handler.cpp" />
     <ClCompile Include="tutorial.cpp" />
     <ClCompile Include="user_input.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="characters_handler.h" />
     <ClInclude Include="cheat.h" />
-    <ClInclude Include="collections.h" />
     <ClInclude Include="dialogue.h" />
     <ClInclude Include="game_manager.h" />
     <ClInclude Include="hints.h" />
     <ClInclude Include="input_action.h" />
     <ClInclude Include="input_handler.h" />
-    <ClInclude Include="interactables.h" />
-    <ClInclude Include="item_handler.h" />
-    <ClInclude Include="room.h" />
+    <ClInclude Include="interactable.h" />
+    <ClInclude Include="stuff_handler.h" />
+    <ClInclude Include="map_handler.h" />
     <ClInclude Include="room_handler.h" />
     <ClInclude Include="tutorial.h" />
     <ClInclude Include="user_input.h" />
