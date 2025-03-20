@@ -1,3 +1,4 @@
+#ifdef _DEBUG
 #pragma once
 #include "input_handler.h"
 
@@ -7,3 +8,4 @@ struct Cheat {
 	/// </summary>
 	static void play_game_for_me();
 };
+#endif

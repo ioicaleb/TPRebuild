@@ -1,3 +1,4 @@
+#ifdef _DEBUG
 #include "cheat.h"
 
 static void GrindXP()
@@ -89,3 +90,4 @@ void Cheat::play_game_for_me() {
 	Input_Handler::create_send_action("use mints");
 	Input_Handler::create_send_action("use button");
 };
+#endif

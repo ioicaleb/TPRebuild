@@ -145,7 +145,9 @@ void Input_Handler::handle_action(Input_Action& action)
 	}
 }
 
+#ifdef _DEBUG
 void Input_Handler::create_send_action(const std::string& command) { 
 	Input_Action action = Input_Action(command);
 	handle_action(action); 
 };
+#endif
