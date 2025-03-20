@@ -82,12 +82,6 @@ struct Stuff_Handler
 	static bool add_item(const std::string& item_name);
 
 	/// <summary>
-	/// Removes item from Inventory and All_items
-	/// </summary>
-	/// <param name="item_name">Name of item to remove</param>
-	static void remove_item(const std::string& item_name);
-
-	/// <summary>
 	/// Verify if item is in list of All_items
 	/// </summary>
 	/// <param name="item_name">Name of item to check</param>
@@ -115,4 +109,8 @@ struct Stuff_Handler
 	static void handle_use_switch(const std::string& item_name);
 
 	static void get_all_inventory();
+
+	static void dig_up_switch();
+	
+	static bool verify_item_used(const std::string& item);
 };

@@ -9,15 +9,6 @@ bool Stuff_Handler::add_item(const std::string& item_name) {
 	return false;
 };
 
-void Stuff_Handler::remove_item(const std::string& item_name) {
-	for (Item* item : Inventory) {
-		if (item->Name == item_name) {
-			All_items.erase(std::remove(All_items.begin(), All_items.end(), item), All_items.end());
-			Inventory.erase(std::remove(Inventory.begin(), Inventory.end(), item), Inventory.end());
-		}
-	}
-};
-
 bool Stuff_Handler::verify_inventory(const std::string& item_name) {
 	for (Item* item : Inventory) {
 		if (item->Name == item_name) {
@@ -46,7 +37,7 @@ void Stuff_Handler::get_all_inventory() {
 		for (Item* itemptr : Inventory) {
 			Item item = *itemptr;
 			if (item.Name != "toolbelt") {
-				Dialogue::print_line(item.Name);
+				Dialogue::print_line("- " + item.Name);
 			}
 		}
 	}

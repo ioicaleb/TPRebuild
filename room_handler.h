@@ -25,11 +25,6 @@ struct Room_Handler
 	static bool change_room(const std::string& target, bool& combat);
 
 	/// <summary>
-	/// Returns list of room names with current room marked
-	/// </summary>
-	static void view_rooms();
-
-	/// <summary>
 	/// Returns list of interactable items in room
 	/// </summary>
 	/// <param name="combat">Only needed in Pantry to determine if enemy already exists</param>

@@ -64,6 +64,10 @@ void Characters_Handler::attack_boss() {
 };
 
 void Characters_Handler::attack_boss(int damage) {
+	lolipop->Health -= damage;
 	std::string message = lolipop->Health >= damage ? "The King still appears stoic and daunting." : "The king is nothing more than a fragile shell now.";
+	if (lolipop->Health < 1) {
+		lolipop->Health = 1;
+	};
 	Dialogue::print_line(message);
 };

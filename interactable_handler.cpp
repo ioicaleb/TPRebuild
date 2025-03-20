@@ -13,6 +13,17 @@ bool Sink_used_bathroom = false;
 bool Light_on = false;
 bool Switch_unburied = false;
 
+bool Stuff_Handler::verify_item_used(const std::string& item) {
+	if (item == "toilet") {
+		return Toilet_used;
+	}
+	if (item == "water bowel") {
+		return Water_bowl_used;
+	}
+}
+
+void Stuff_Handler::dig_up_switch() { Switch_unburied = true; }
+
 HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
 static Interactable create_item(std::string name, std::string description, std::string use_message) {
@@ -102,6 +113,7 @@ void Stuff_Handler::handle_use_interact(const std::string& item_name)
 		{
 			Room_Handler::Map.add_hidden_room();
 			message = "You lift the plastic cover and flick the switch. You hear a loud rumbling noise. Something has changed.";
+			Room_Handler::Map.unlock("Hidden Room");
 		}
 		else if (!Switch_unburied)
 		{
@@ -175,20 +187,20 @@ void Stuff_Handler::handle_use_interact(const std::string& item_name)
 	else if (item.Name == "button") {
 		Dialogue::add_pause(800);
 		if (!Light_on) {
-			SetConsoleTextAttribute(hConsole, 107 | 30);
+			SetConsoleTextAttribute(hConsole, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
 			system("CLS");
 			Dialogue::add_pause(750);
 			Dialogue::print_line("Everything goes white for a few seconds.");
 			Dialogue::add_pause(750);
-			SetConsoleTextAttribute(hConsole, 40 | 97);
+			SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
 		}
 		else {
-			SetConsoleTextAttribute(hConsole, 40 | 97);
+			SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
 			system("CLS");
 			Dialogue::add_pause(750);
 			Dialogue::print_line("Everything goes black for a few seconds.");
 			Dialogue::add_pause(750);
-			SetConsoleTextAttribute(hConsole, 107 | 30);
+			SetConsoleTextAttribute(hConsole, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
 		}
 		system("CLS");
 		Dialogue::print_line("When it fades, you see that you are back in your yard. The dirt piles are gone. Your toolbelt is gone. All of the stuff you collected is gone.");
@@ -298,7 +310,6 @@ void Stuff_Handler::handle_use_interact(const std::string& item_name)
 		{
 			Water_on = true;
 			message = "You turn the handle, which results in the pipes gently rumbling. You can hear a short burst of water running through the pipes.\nThe pipes quickly go quiet. It seems there wasn't much water left.";
-
 		}
 	}
 	Dialogue::print_line(message);

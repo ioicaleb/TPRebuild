@@ -76,7 +76,7 @@ void Cheat::play_game_for_me() {
 	Input_Handler::create_send_action("move backyard");
 	Input_Handler::create_send_action("use metal detector");
 	Input_Handler::create_send_action("use shovel");
-	Input_Handler::create_send_action("use switch");
+	Input_Handler::create_send_action("use buried switch");
 	Input_Handler::create_send_action("move hidden room");
 	Input_Handler::create_send_action("use knife");
 	Input_Handler::create_send_action("use shovel");

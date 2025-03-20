@@ -40,8 +40,8 @@ Item* Stuff_Handler::get_itemptr(const std::string& item_name)
 void Stuff_Handler::handle_use_item(const std::string& item_name)
 {
 	std::string message;
-	if (Stuff_Handler::verify_inventory(item_name)) {
-		message = "You don't have " + item_name.back() == "s" ? "any " : "a " + item_name + ".";
+	if (!Stuff_Handler::verify_inventory(item_name)) {
+		message = "You don't have " + Dialogue::set_article(item_name) + item_name + ".";
 	}
 	else {
 		if (item_name == "batteries") {
@@ -82,7 +82,6 @@ void Stuff_Handler::handle_use_item(const std::string& item_name)
 			if (Batteries_used)
 			{
 				message = "You click the switch on the lantern, creating a slightly blue glow.";
-				Stuff_Handler::remove_item(item_name);
 				message += "\n" + Room_Handler::Map.unlock("Basement");
 			}
 			else
@@ -100,12 +99,12 @@ void Stuff_Handler::handle_use_item(const std::string& item_name)
 			}
 		}
 		else if (item_name == "knife") {
-			if (Characters_Handler::get_player().get_experience() < 10) {
-				message = "You have all of the tools you need but just aren't able to visualize in your mind how all of this could be used together.\nMaybe with " + std::to_string(10 - Characters_Handler::get_player().get_experience()) + " more sticks the picture might become clearer.";
-			}
-			else if (Room_Handler::get_current_location() == "Hidden Room" && !(Room_Handler::Map.verify_boss("Hidden Room"))) {
+			if (Room_Handler::get_current_location() == "Hidden Room" && !(Room_Handler::Map.verify_boss("Hidden Room"))) {
 				message = "You flick out your knife and frantically whittle away at the king's candy shell, removing layer after layer of candy coating until your knife is dull and useless.";
 				Characters_Handler::attack_boss(25);
+			}
+			else if (Characters_Handler::get_player().get_experience() < 10 && Room_Handler::Map.verify_locked("Attic")) {
+				message = "You have all of the tools you need but just aren't able to visualize in your mind how all of this could be used together.\nMaybe with " + std::to_string(10 - Characters_Handler::get_player().get_experience()) + " more sticks the picture might become clearer.";
 			}
 			else
 			{
@@ -119,7 +118,6 @@ void Stuff_Handler::handle_use_item(const std::string& item_name)
 			if (Room_Handler::Map.verify_locked("Attic")) {
 				message = "You hook the ends of the ladder into the slots on the attic hatch. After a quick integrity check, you confidently climb into the attic. The rungs creak beneath your feet as you climb.";
 				Room_Handler::Map.remove_use_item("Attic", { "ladder" });
-				Stuff_Handler::remove_item("ladder");
 				message += "\n" + Room_Handler::Map.unlock("Attic");
 			}
 			else {
@@ -139,7 +137,6 @@ void Stuff_Handler::handle_use_item(const std::string& item_name)
 				{
 					message = "You shove the mints into your mouth, sucking and biting down as they scream and wail at their plan failing.\nThe weird voice in your head hasn't gone away yet, but you're confident that once the mints dissolve and get digested you'll return to normal.\nThe only thing to do is to USE the BUTTON and end this madness.";
 					Room_Handler::Map.remove_use_item("Hidden Room", {"mints"});
-					Stuff_Handler::remove_item("mints");
 				}
 				else
 				{
@@ -170,6 +167,7 @@ void Stuff_Handler::handle_use_item(const std::string& item_name)
 			if ((*Room_Handler::Map.get_room("Backyard")).Interactables.find("buried switch") == (*Room_Handler::Map.get_room("Backyard")).Interactables.end())
 			{
 				Room_Handler::Map.add_interactable("Backyard", { "buried switch" });
+				Stuff_Handler::dig_up_switch();
 				message = "You scoop up the loose dirt with ease. It's not long before you uncover a strange metal plate with a SWITCH covered in a plastic case.";
 			}
 			else if (Room_Handler::get_current_location() == "Hidden Room" && !Room_Handler::Map.verify_boss("Hidden Room"))
@@ -177,7 +175,6 @@ void Stuff_Handler::handle_use_item(const std::string& item_name)
 				message = "You unstrap your trusty shovel. With a barbaric shout, you wallop the king, bashing layer after layer from it's shell. You smash until the wooden handle on your shovel cracks and splinters in two.";
 				Room_Handler::Map.remove_use_item("Hidden room", { "shovel" });
 				Room_Handler::Map.remove_use_item("Backyard", { "shovel" });
-				Stuff_Handler::remove_item("shovel");
 				Characters_Handler::attack_boss(25);
 			}
 			else
@@ -190,7 +187,13 @@ void Stuff_Handler::handle_use_item(const std::string& item_name)
 			Stuff_Handler::get_all_inventory();
 		}
 		else if (item_name == "water bottle") {
-			if (Water_available > 0)
+			if (Room_Handler::get_current_location() == "Hidden Room" && Water_available > 0 && !Room_Handler::Map.verify_boss("Hidden Room"))
+			{
+				message = "Knowing this is your last chance to use it, you spray all of your remaining water over the king. The powerful spray wears down his thick outer shell. ";
+				Characters_Handler::attack_boss(Water_available);
+				Water_available = 0;
+			}
+			else if (Water_available > 0)
 			{
 				int sugar = Characters_Handler::get_player().get_sugar_level();
 				if (sugar > 0)
@@ -218,13 +221,6 @@ void Stuff_Handler::handle_use_item(const std::string& item_name)
 			else
 			{
 				message = "The bottle is empty. No matter how hard you try, you can't get so much as a drop.";
-			}
-			if (Room_Handler::get_current_location() == "Hidden Room" && Water_available > 0 && !Room_Handler::Map.verify_boss("Hidden Room"))
-			{
-				message = "Knowing this is your last chance to use it, you spray all of your remaining water over the king. The powerful spray wears down his thick outer shell. ";
-				Characters_Handler::attack_boss(Water_available);
-				Room_Handler::Map.remove_use_item("Hidden Room", {"water bottle"});
-				Stuff_Handler::remove_item("water bottle");
 			}
 		}
 	}
@@ -255,6 +251,11 @@ void Stuff_Handler::handle_get_item(std::string name) {
 		Dialogue::print_line("You look great.");
 		Dialogue::add_pause(100);
 		Dialogue::print_line("You feel great.");
+	}
+	else if (name == "knife") {
+		auto pos = (*Room_Handler::Map.get_room("Kitchen")).Description.find("\n");
+		(*Room_Handler::Map.get_room("Kitchen")).Description = (*Room_Handler::Map.get_room("Kitchen")).Description.substr(0, pos);
+		Dialogue::print_line("You playfully swing your knife to and fro before sticking it into the holster on your TOOLBELT.");
 	}
 	else {
 		Dialogue::print_line("You strap the " + name + " to your toolbelt.");

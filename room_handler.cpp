@@ -25,13 +25,6 @@ bool Room_Handler::change_room(const std::string& target, bool& combat) {
 	return combat;
 };
 
-void Room_Handler::view_rooms() {
-	for (Room* roomptr : Map.Rooms) {
-		Room room = *roomptr;
-		Dialogue::print_line(format("{0} {1}", room.Name, (Current_location == room.Name ? " - Current Location" : "")));
-	}
-}
-
 void Room_Handler::search_room(bool& combat) {
 	if (Current_location == "Pantry") {
 		if (combat) {

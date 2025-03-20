@@ -43,7 +43,7 @@ void Input_Handler::handle_action(Input_Action& action)
 		}
 	}
 	else if (action.command == "map") {
-		Room_Handler::view_rooms();
+		Room_Handler::Map.view_rooms();
 	}
 	else if (action.command == "check") {
 		action = action.target == "" ? User_Input::get_target(action, "Which item would you like to check?") : action;
@@ -105,7 +105,7 @@ void Input_Handler::handle_action(Input_Action& action)
 		else if (Stuff_Handler::verify_inventory(action.target)) {
 			Dialogue::print_line("You already have one. USE your TOOLBELT to check what you have.");
 		}
-		if (Room_Handler::Map.verify_room_item(action.target, "get")) {
+		else if (Room_Handler::Map.verify_room_item(action.target, "get")) {
 			if (Stuff_Handler::add_item(action.target)) {
 				Stuff_Handler::handle_get_item(action.target);
 			}
